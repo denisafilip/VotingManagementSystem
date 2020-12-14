@@ -1,4 +1,4 @@
-# VotingManagementSystem-F
+# Voting Management System
 
 Application written in Java, for the OOP class.
 
