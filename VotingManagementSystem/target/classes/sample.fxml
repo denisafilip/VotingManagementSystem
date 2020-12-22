@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0"
+            prefWidth="723.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml" fx:controller="sample.Controller">
+   <children>
+      <AnchorPane layoutX="354.0" layoutY="25.0" prefHeight="485.0" prefWidth="325.0"
+                  style="-fx-background-color: #128ae0;" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="354.0"
+                  AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="25.0">
+         <effect>
+            <DropShadow height="11.47" radius="5.235" width="11.47"/>
+         </effect>
+         <children>
+            <TextField fx:id="name" layoutX="27.0" layoutY="103.0" prefHeight="26.0" prefWidth="276.0"
+                       promptText="nume " AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="37.0"
+                       AnchorPane.topAnchor="103.0"/>
+            <TextField fx:id="email" layoutX="27.0" layoutY="165.0" prefHeight="26.0" prefWidth="276.0"
+                       promptText="email" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="37.0"
+                       AnchorPane.topAnchor="165.0"/>
+            <Label alignment="CENTER" layoutX="67.0" layoutY="49.0" text="Introduceți datele dvs:" textFill="WHITE"
+                   AnchorPane.leftAnchor="67.0" AnchorPane.rightAnchor="67.80000000000001" AnchorPane.topAnchor="49.0">
+               <font>
+                  <Font name="System Bold" size="18.0"/>
+               </font>
+            </Label>
+            <DatePicker fx:id="birthday" layoutX="27.0" layoutY="289.0" prefHeight="26.0" prefWidth="276.0"
+                        promptText="data nașterii" showWeekNumbers="true" style="-fx-background-color: #ffffff;"
+                        AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="289.0"/>
+            <TextField fx:id="CNP" layoutX="27.0" layoutY="414.0" prefHeight="26.0" prefWidth="276.0" promptText="CNP"
+                       AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="414.0"/>
+            <PasswordField fx:id="password" layoutX="27.0" layoutY="229.0" prefHeight="26.0" prefWidth="276.0"
+                           promptText="parolă" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="37.0"
+                           AnchorPane.topAnchor="229.0"/>
+            <ComboBox fx:id="gender" layoutX="27.0" layoutY="355.0" prefHeight="26.0" prefWidth="276.0" promptText="gen"
+                      style="-fx-background-color: #ffffff;" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="37.0"
+                      AnchorPane.topAnchor="355.0">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:id="female" fx:value="F"/>
+                     <String fx:id="male" fx:value="M"/>
+                  </FXCollections>
+               </items>
+            </ComboBox>
+            <Button fx:id="btnLogin" layoutX="184.0" layoutY="471.0" mnemonicParsing="false" prefHeight="26.0"
+                    prefWidth="119.0" style="-fx-background-color: #ffffff;" text="Votează" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0"/>
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets top="10.0"/>
+         </padding>
+      </AnchorPane>
+      <Label layoutX="89.0" layoutY="60.0" text="Votează!" textAlignment="CENTER">
+         <font>
+            <Font name="Arial Bold" size="36.0"/>
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
