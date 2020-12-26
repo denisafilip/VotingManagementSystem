@@ -9,6 +9,8 @@ import java.util.*;
 public class Country {
     private final String name;
     private List<County> Counties;
+    private int population;
+    private int totalVotes;
 
     public Country(String name) {
         this.name = name;
@@ -65,8 +67,24 @@ public class Country {
     public List<County> getCounties() {
         return Counties;
     }
-}
 
-/* String romanian = "\"< a, A < \\u0103, \\u0102 < \\u00E2, \\u00C2 < b, B < c, C < d, D < e, E < f, F < g, G < h, H < i, I < \\u00EE, \\u00CE < j, J < k, K < l, L " +
-                "< m, M < n, N < o, O < p, P < q, Q < r, R < s, S < \\u015F, \\u015E < t, T < \\u0163, \\u0162 < u, U < v, V < w, W < x, X < y, Y < z, Z";
-        RuleBasedCollator myRomanian = new RuleBasedCollator(romanian);*/
+    public String getName() {
+        return name;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(int population) {
+        this.population = population;
+    }
+
+    public int getTotalVotes() {
+        return totalVotes;
+    }
+
+    public void setTotalVotes(int totalVotes) {
+        this.totalVotes = totalVotes;
+    }
+}

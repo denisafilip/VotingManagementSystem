@@ -32,8 +32,8 @@ public class Election {
         pParties.add(new PoliticalParty("Partidul Mișcarea Populară", "PMP", politicalPosition.CENTER_RIGHT));
         pParties.add(new PoliticalParty("PRO România", "PRO România", politicalPosition.CENTER));
         pParties.add(new PoliticalParty("Uniunea Națională pentru Progresul României", "UNPR", politicalPosition.CENTER_LEFT));
-        pParties.add(new PoliticalParty("Partidul Național Liberal", "PNL", politicalPosition.CENTER_RIGHT));
         pParties.add(new PoliticalParty("Partidul România Unită", "PRU", politicalPosition.EXTREME_RIGHT));
+        pParties.add(new PoliticalParty("Partidul Oamenilor Liberi", "POL", politicalPosition.CENTER));
         this.politicalParties = pParties;
     }
 

@@ -2,13 +2,15 @@ package user;
 
 import country.Country;
 import country.County;
+import javafx.scene.control.Label;
+import webScraping.Scraping;
 
 import java.time.LocalDate;
 import java.time.Period;
 
 public class User {
-    
-    private String name;
+    private String firstName;
+    private String lastName;
     private String gender; //M or F
     private String CNP;
     private int age;
@@ -21,26 +23,37 @@ public class User {
     public User() {
     }
 
-    public User(String name, County county) {
-        this.name = name;
+    public User(String firstName, County county) {
+        this.firstName = firstName;
         this.county = county;
     }
 
-    public User(String mail, String password, String name, String gender, String CNP, LocalDate dateOfBirth) {
+    public User(String mail, String password, String firstName, String lastName, String gender, String CNP, LocalDate dateOfBirth) {
         this.mail = mail;
         this.password = password;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.gender = gender;
         this.CNP = CNP;
         this.dateOfBirth = dateOfBirth;
+        this.age = computeUserAge();
+        if (verifyCNP(null)) this.county = assignUserToCounty();
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public County getCounty() {
@@ -99,57 +112,66 @@ public class User {
         this.CNP = CNP;
     }
 
-    /**
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    /*/**
      * @param Romania - used to assign the county of the user if the introduced CNP is valid
      *
      * @return true if user's CNP meets all requirements
      * depending on the CNP, you are assigned to a county of Romania from which you can vote
      */
-    public boolean verifyCNP(Country Romania) {
+    public boolean verifyCNP(Label lblCNP) {
         String constant = "279146358279";
         if (!this.CNP.matches("[0-9]+")) {
-            System.err.println("You must enter only numbers for the CNP");
+            if (lblCNP != null) lblCNP.setText("CNP-ul trebuie să conțină doar cifre.");
             return false;
         }
         if (this.CNP.length() != 13) {
-            System.err.println("The CNP must have 13 digits.");
+            if (lblCNP != null) lblCNP.setText("CNP-ul trebuie să fie format din 13 cifre.");
             return false;
         }
         int sum = 0;
         for (int i = 0; i < constant.length(); i++) {
-            sum = sum + this.CNP.charAt(i) * constant.charAt(i);
+            sum += (this.CNP.charAt(i) - '0') * (constant.charAt(i) - '0');
         }
         int rest = sum % 11;
         int controlDigit = Character.getNumericValue(this.CNP.charAt(12));
         if ((rest < 10 && rest == controlDigit) || (rest == 10 && controlDigit == 1)) {
             if ((this.gender.equals("F") && (this.CNP.charAt(0) == '6' || this.CNP.charAt(0) == '2')) ||
                     (this.gender.equals("M") && (this.CNP.charAt(0) == '5' || this.CNP.charAt(0) == '1'))) {
-                this.county = assignUserToCounty(Romania);
                 return true;
             } else {
-                System.err.println("The first digit of your CNP does not match your gender.");
+                if (lblCNP != null) lblCNP.setText("Prima cifră a CNP-ului introdus nu se potrivește cu genul dvs.");
                 return false;
             }
         } else {
-            System.err.println("The CNP you entered is not valid.");
+            if (lblCNP != null) lblCNP.setText("CNP-ul introdus nu este valid.");
             return false;
         }
     }
 
-    /**
+   /* /**
      *
      * @param Romania - used to get the counties of Romania
      *                still need to swap a few elements to have them in sorted order and to remove Giurgiu and Calarasi and Bucuresti from the arraylist
      */
-    public County assignUserToCounty(Country Romania) {
+    public County assignUserToCounty() {
+        Scraping scraper = new Scraping();
+        Country Romania = scraper.webScrapingCounties();
         Romania.sortCountiesAlphabetically(Romania);
+
         Romania.getCounties().remove(19); //removing "Giurgiu" county from arraylist
         Romania.getCounties().remove(12); //removing "Călărași" county from arraylist
         Romania.getCounties().remove(10); //removing "București" county from arraylist
         int countyDigits = (this.CNP.charAt(7) - '0')*10 + (this.CNP.charAt(8) - '0');
-        for (int i = 1; i < 39; i++) {
-            System.out.println(Romania.getCounties().get(i).getCountyName());
-            if (countyDigits == i) {
+        for (int i = 0; i < 39; i++) {
+            if (countyDigits == i + 1) {
                 return Romania.getCounties().get(i);
             }
         }
@@ -183,17 +205,17 @@ public class User {
 
     /**
      *
-     * @return true if user's gender is masculine/feminine and is expressed through a capital letter
+     * @return true if user's last name is formed only of letters, spaces or hyphens
      */
-    public boolean verifyGender() {
-        return (this.gender.equals("M") || this.gender.equals("F"));
+    public boolean verifyLastName() {
+        return (this.lastName.matches("[a-zA-Z- ]+"));
     }
 
     /**
      *
-     * @return true if user's name is formed only of letters
+     * @return true if user's first name is formed only of letters, spaces or hyphens
      */
-    public boolean verifyName() {
-        return (this.name.matches("[a-zA-Z]+"));
+    public boolean verifyFirstName() {
+        return (this.firstName.matches("[a-zA-Z- ]+"));
     }
 }

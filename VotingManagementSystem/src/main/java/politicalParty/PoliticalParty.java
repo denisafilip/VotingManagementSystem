@@ -5,6 +5,7 @@ public class PoliticalParty {
     private String abbreviation;
     //private List<Candidate> candidates;
     private politicalPosition politicalPosition; //position of the political party in the political spectrum
+    private int noOfVotes;
 
     public PoliticalParty(String name, String abbreviation, politicalPosition politicalPosition) {
         this.name = name;
@@ -35,5 +36,17 @@ public class PoliticalParty {
 
     public void setPoliticalPosition(politicalPosition politicalPosition) {
         this.politicalPosition = politicalPosition;
+    }
+
+    public int getNoOfVotes() {
+        return noOfVotes;
+    }
+
+    public void setNoOfVotes(int noOfVotes) {
+        this.noOfVotes = noOfVotes;
+    }
+
+    public void incrementNoOfVotes() {
+        this.noOfVotes++;
     }
 }

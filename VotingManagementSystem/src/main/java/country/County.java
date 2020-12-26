@@ -3,12 +3,10 @@ package country;
 public class County {
 
     private String countyName;
-    //private int population;
-    private int totalVotes;
+    private int noOfVotes;
 
     public County(String name) {
         this.countyName = name;
-        //this.population = population;
     }
 
     public String getCountyName() {
@@ -19,11 +17,15 @@ public class County {
         this.countyName = countyName;
     }
 
-    public int getTotalVotes() {
-        return totalVotes;
+    public int getNoOfVotes() {
+        return noOfVotes;
     }
 
-    public void setTotalVotes(int totalVotes) {
-        this.totalVotes = totalVotes;
+    public void setNoOfVotes(int noOfVotes) {
+        this.noOfVotes = noOfVotes;
+    }
+
+    public void incrementNoOfVotes() {
+        this.noOfVotes++;
     }
 }
