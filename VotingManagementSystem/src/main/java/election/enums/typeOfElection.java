@@ -1,4 +1,4 @@
-package election;
+package election.enums;
 
 public enum typeOfElection {
     L, //local elections

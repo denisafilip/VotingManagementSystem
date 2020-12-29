@@ -16,11 +16,4 @@ public class Candidate extends User {
     public String getPoliticalPartyAbbr() {
         return politicalPartyAbbr;
     }
-
-    public void setPoliticalPartyAbbr(String politicalPartyAbbr) {
-        this.politicalPartyAbbr = politicalPartyAbbr;
-    }
-
-
-
 }

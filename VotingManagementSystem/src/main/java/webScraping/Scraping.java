@@ -30,9 +30,9 @@ public class Scraping {
             //parsing data of the candidates for the parliament elections
             Document doc = Jsoup.connect("https://www.g4media.ro/harta-candidatii-la-alegerile-parlamentare-2020-istoricul-prezentei-mandatele-pe-fiecare-judet-si-scorurile-din-2016.html").get();
             Elements paragraph = doc.select("p:contains(: Senat)");
-            ParliamentElection legislativeElection = new ParliamentElection(Year.of(2020), 5);
-            legislativeElection.setParliamentCandidates(Romania, paragraph);
-            return legislativeElection;
+            ParliamentElection parliamentElection = new ParliamentElection(Year.of(2020), 5);
+            parliamentElection.setParliamentCandidates(Romania, paragraph);
+            return parliamentElection;
         } catch (IOException ioException) {
             throw new RuntimeException(ioException);
         }

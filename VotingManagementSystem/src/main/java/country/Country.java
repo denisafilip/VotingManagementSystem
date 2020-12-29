@@ -9,7 +9,6 @@ import java.util.*;
 public class Country {
     private final String name;
     private List<County> Counties;
-    private int population;
     private int totalVotes;
 
     public Country(String name) {
@@ -70,14 +69,6 @@ public class Country {
 
     public String getName() {
         return name;
-    }
-
-    public int getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(int population) {
-        this.population = population;
     }
 
     public int getTotalVotes() {

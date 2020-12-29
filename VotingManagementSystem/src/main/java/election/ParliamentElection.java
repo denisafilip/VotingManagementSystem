@@ -1,14 +1,14 @@
 package election;
 
 import country.Country;
+import election.enums.durationOfMandate;
+import election.enums.typeOfElection;
 import user.Candidate;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ParliamentElection extends Election {
     private List<Candidate> chamberOfDeputies;
@@ -16,7 +16,6 @@ public class ParliamentElection extends Election {
 
     public ParliamentElection(Year yearOfElection, double electoralThreshold) {
         super(typeOfElection.PA, yearOfElection, durationOfMandate.FOUR_YEARS, electoralThreshold);
-
     }
 
     public List<Candidate> getChamberOfDeputies() {
@@ -52,6 +51,7 @@ public class ParliamentElection extends Election {
             if (split.get(0).equals("PNL")) {
                 countyIndex++;
             }
+
             int j = 2; //starting from 2 because I want to skip over political party and "Senat" word
             while(!split.get(j).equals("Camera Deputaților")) {
                 Candidate forSenate = new Candidate(split.get(j), country.getCounties().get(countyIndex), split.get(0));
@@ -68,6 +68,4 @@ public class ParliamentElection extends Election {
         this.chamberOfDeputies = chamberOfDeputies;
         this.senate = senate;
     }
-
-
 }

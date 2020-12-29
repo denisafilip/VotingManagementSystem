@@ -1,12 +1,13 @@
 package election;
 
+import election.enums.durationOfMandate;
+import election.enums.typeOfElection;
 import user.Candidate;
 
 import java.time.Year;
 import java.util.ArrayList;
 
 public class EuropeanParliamentElection extends Election {
-    private final int numberOfMEPS = 32; //number of members of european parliament
     private ArrayList<Candidate> candidates;
 
     public EuropeanParliamentElection(Year yearOfElection, double electoralThreshold) {

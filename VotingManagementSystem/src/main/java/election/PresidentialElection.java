@@ -1,5 +1,8 @@
 package election;
 
+import election.enums.durationOfMandate;
+import election.enums.numberOfRound;
+import election.enums.typeOfElection;
 import user.Candidate;
 
 import java.time.Year;

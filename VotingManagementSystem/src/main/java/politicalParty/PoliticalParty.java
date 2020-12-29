@@ -3,14 +3,11 @@ package politicalParty;
 public class PoliticalParty {
     private String name;
     private String abbreviation;
-    //private List<Candidate> candidates;
     private politicalPosition politicalPosition; //position of the political party in the political spectrum
-    private int noOfVotes;
 
     public PoliticalParty(String name, String abbreviation, politicalPosition politicalPosition) {
         this.name = name;
         this.abbreviation = abbreviation;
-        //this.candidates = candidates;
         this.politicalPosition = politicalPosition;
     }
 
@@ -38,15 +35,4 @@ public class PoliticalParty {
         this.politicalPosition = politicalPosition;
     }
 
-    public int getNoOfVotes() {
-        return noOfVotes;
-    }
-
-    public void setNoOfVotes(int noOfVotes) {
-        this.noOfVotes = noOfVotes;
-    }
-
-    public void incrementNoOfVotes() {
-        this.noOfVotes++;
-    }
 }

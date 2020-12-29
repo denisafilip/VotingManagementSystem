@@ -1,6 +1,7 @@
-package sample;
+package JavaFX.registration;
 
 
+import JavaFX.database.ParentController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +17,7 @@ import java.util.ResourceBundle;
 
 public class RegistrationController extends ParentController implements Initializable {
 
+
     @FXML private Label lblFirstName;
     @FXML private Label lblLastName;
     @FXML private Label lblEmail;
@@ -27,9 +29,10 @@ public class RegistrationController extends ParentController implements Initiali
 
     @FXML
     private Button btnVote;
+    @FXML private Button btnLogIn;
     @FXML
     private DatePicker dateBirthday;
-    ObservableList<String> options = FXCollections.observableArrayList("F", "M");
+    private final ObservableList<String> options = FXCollections.observableArrayList("F", "M");
     @FXML
     private ComboBox<String> comboGender;
     @FXML
@@ -94,7 +97,7 @@ public class RegistrationController extends ParentController implements Initiali
             lblCNP.setText("Vă rog să vă introduceți CNP-ul.");
             return;
         }
-        User u = new User(txtEmail.getText(), passPassword.getText(), txtFirstName.getText(), txtLastName.getText(), comboGender.getValue(), txtCNP.getText(), dateBirthday.getValue());
+        User u = new User(txtEmail.getText(), passPassword.getText(), txtFirstName.getText(), txtLastName.getText(), comboGender.getValue(), txtCNP.getText(), dateBirthday.getValue(), false, false, false, false, false, false);
         if (!u.verifyLastName()) {
             lblLastName.setText("Numele trebuie să conțină doar litere.");
             return;
@@ -110,15 +113,18 @@ public class RegistrationController extends ParentController implements Initiali
         if (!u.verifyCNP(lblCNP)) {
             return;
         }
-        if (!isUserInDatabase(u.getMail(), u.getPassword(), u.getCNP())) {
-            insertIntoDatabase(u.getFirstName(), u.getLastName(), u.getMail(), u.getPassword(), u.getGender(), u.getDateOfBirth(), u.getAge(), u.getCNP(), u.getCounty(), false);
+        CNP = u.getCNP();
+        if (!isUserInDatabaseWithCNP(u.getMail(), u.getPassword(), u.getCNP())) {
+            insertUserIntoDatabase(u.getFirstName(), u.getLastName(), u.getMail(), u.getPassword(), u.getGender(), u.getDateOfBirth(), u.getAge(), u.getCNP(), u.getCounty(),
+                    u.hasVotedPresidential(), u.hasVotedEuro(), u.hasVotedLocal(), u.hasVotedParliament(), u.hasVotedReferendum(), u.hasVotedReferendum2(), u.isAdmin());
+            changeScene(event, "/electionType.fxml", "Alegeri");
         } else {
-            showAlert(Alert.AlertType.INFORMATION, owner, "Înregistrare nereușită", "Puteți să votați o singură dată.");
-            return;
+            showAlert(Alert.AlertType.INFORMATION, owner, "Înregistrare nereușită", "Acest cont este deja înregistrat.");
         }
+    }
 
-        goForwardToScene(event, "/electionType.fxml", "Alegeri");
-
+    public void goToLogIn(ActionEvent event) throws IOException {
+        changeScene(event, "/logIn.fxml", "Conectare");
     }
 
     /**

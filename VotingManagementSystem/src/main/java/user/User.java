@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.Period;
 
 public class User {
+    private final static String ADMIN_EMAIL = "denisafilip0207@gmail.com";
+
     private String firstName;
     private String lastName;
     private String gender; //M or F
@@ -16,9 +18,15 @@ public class User {
     private int age;
     private LocalDate dateOfBirth;
     private County county;
-    private boolean hasVoted;
     private String mail;
     private String password;
+    private boolean hasVotedPresidential;
+    private boolean hasVotedEuro;
+    private boolean hasVotedParliament;
+    private boolean hasVotedLocal;
+    private boolean hasVotedReferendum;
+    private boolean hasVotedReferendum2;
+    private boolean isAdmin;
 
     public User() {
     }
@@ -28,7 +36,14 @@ public class User {
         this.county = county;
     }
 
-    public User(String mail, String password, String firstName, String lastName, String gender, String CNP, LocalDate dateOfBirth) {
+    public User(String mail, String password) {
+        this.mail = mail;
+        this.password = password;
+    }
+
+    public User(String mail, String password, String firstName, String lastName, String gender, String CNP, LocalDate dateOfBirth,
+                boolean hasVotedPresidential, boolean hasVotedEuro, boolean hasVotedParliament, boolean hasVotedLocal, boolean hasVotedReferendum,
+                boolean hasVotedReferendum2) {
         this.mail = mail;
         this.password = password;
         this.firstName = firstName;
@@ -38,6 +53,13 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.age = computeUserAge();
         if (verifyCNP(null)) this.county = assignUserToCounty();
+        this.hasVotedEuro = hasVotedEuro;
+        this.hasVotedLocal = hasVotedLocal;
+        this.hasVotedPresidential = hasVotedPresidential;
+        this.hasVotedParliament = hasVotedParliament;
+        this.hasVotedReferendum = hasVotedReferendum;
+        this.hasVotedReferendum2 = hasVotedReferendum2;
+        this.isAdmin = this.mail.equals(ADMIN_EMAIL);
     }
 
     public String getFirstName() {
@@ -72,13 +94,50 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public boolean isHasVoted() {
-        return hasVoted;
+    public boolean hasVotedPresidential() {
+        return hasVotedPresidential;
     }
 
-    public void setHasVoted(boolean hasVoted) {
-        this.hasVoted = hasVoted;
+    public void setHasVotedPresidential(boolean hasVotedPresidential) {
+        this.hasVotedPresidential = hasVotedPresidential;
     }
+
+    public boolean hasVotedEuro() {
+        return hasVotedEuro;
+    }
+
+    public void setHasVotedEuro(boolean hasVotedEuro) {
+        this.hasVotedEuro = hasVotedEuro;
+    }
+
+    public boolean hasVotedParliament() {
+        return hasVotedParliament;
+    }
+
+    public void setHasVotedParliament(boolean hasVotedParliament) {
+        this.hasVotedParliament = hasVotedParliament;
+    }
+
+    public boolean hasVotedLocal() {
+        return hasVotedLocal;
+    }
+
+    public void setHasVotedLocal(boolean hasVotedLocal) {
+        this.hasVotedLocal = hasVotedLocal;
+    }
+
+    public boolean hasVotedReferendum() {
+        return hasVotedReferendum;
+    }
+
+    public void setHasVotedReferendum(boolean hasVotedReferendum) {
+        this.hasVotedReferendum = hasVotedReferendum;
+    }
+
+    public Boolean hasVotedReferendum2() {
+        return hasVotedReferendum2;
+    }
+
 
     public String getMail() {
         return mail;
@@ -120,11 +179,18 @@ public class User {
         this.age = age;
     }
 
-    /*/**
-     * @param Romania - used to assign the county of the user if the introduced CNP is valid
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    /**
      *
-     * @return true if user's CNP meets all requirements
-     * depending on the CNP, you are assigned to a county of Romania from which you can vote
+     * @param lblCNP - JavaFX label, used to display errors if the CNP is incorrect
+     * @return true is user's CNP meets all of the requirements
      */
     public boolean verifyCNP(Label lblCNP) {
         String constant = "279146358279";
@@ -156,10 +222,9 @@ public class User {
         }
     }
 
-   /* /**
+    /**
      *
-     * @param Romania - used to get the counties of Romania
-     *                still need to swap a few elements to have them in sorted order and to remove Giurgiu and Calarasi and Bucuresti from the arraylist
+     * @return the County in which the user is located, computed based on his/hers CNP
      */
     public County assignUserToCounty() {
         Scraping scraper = new Scraping();
@@ -218,4 +283,8 @@ public class User {
     public boolean verifyFirstName() {
         return (this.firstName.matches("[a-zA-Z- ]+"));
     }
+
+
+
+
 }

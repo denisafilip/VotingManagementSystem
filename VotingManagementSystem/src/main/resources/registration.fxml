@@ -9,63 +9,31 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="821.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.RegistrationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="770.0" prefWidth="1128.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaFX.registration.RegistrationController">
    <children>
-      <AnchorPane layoutX="354.0" layoutY="25.0" prefHeight="485.0" prefWidth="325.0" style="-fx-background-color: #67b8e0;" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="354.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="25.0">
+      <AnchorPane layoutX="593.0" layoutY="34.0" prefHeight="702.0" prefWidth="478.0" style="-fx-background-color: #4299eb;" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="593.0" AnchorPane.rightAnchor="57.0" AnchorPane.topAnchor="34.0">
          <effect>
             <DropShadow height="11.47" radius="5.235" width="11.47" />
          </effect>
          <children>
-            <TextField fx:id="txtLastName" layoutX="27.0" layoutY="88.0" prefHeight="34.0" prefWidth="184.0" promptText="Nume" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="227.0" AnchorPane.topAnchor="89.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor></TextField>
-            <TextField fx:id="txtEmail" layoutX="27.0" layoutY="147.0" prefHeight="34.0" prefWidth="384.0" promptText="Email" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="147.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor></TextField>
             <Label alignment="CENTER" layoutX="67.0" layoutY="28.0" text="Introduceți datele dvs:" textFill="WHITE" AnchorPane.leftAnchor="67.0" AnchorPane.rightAnchor="67.80000000000001" AnchorPane.topAnchor="28.0">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="System Bold" size="22.0" />
                </font>
             </Label>
-            <DatePicker fx:id="dateBirthday" layoutX="27.0" layoutY="326.0" prefHeight="34.0" prefWidth="374.0" promptText="Data Nașterii" showWeekNumbers="true" style="-fx-background-color: #ffffff;" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="326.0">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></DatePicker>
-            <TextField fx:id="txtCNP" layoutX="27.0" layoutY="449.0" prefHeight="34.0" prefWidth="374.0" promptText="CNP" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="449.0">
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor></TextField>
-            <PasswordField fx:id="passPassword" layoutX="27.0" layoutY="208.0" prefHeight="34.0" prefWidth="374.0" promptText="Parolă" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="208.0">
+            <TextField fx:id="txtLastName" layoutX="27.0" layoutY="90.0" prefHeight="42.0" prefWidth="198.0" promptText="Nume" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="253.0" AnchorPane.topAnchor="90.0">
                <font>
                   <Font size="14.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="TEXT" />
-               </cursor></PasswordField>
-            <ComboBox fx:id="comboGender" layoutX="27.0" layoutY="385.0" prefHeight="34.0" prefWidth="374.0" promptText="Gen" style="-fx-background-color: #ffffff;" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="385.0">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></ComboBox>
-            <Button fx:id="btnVote" layoutX="140.0" layoutY="502.0" mnemonicParsing="false" onAction="#setOnAction" prefHeight="34.0" prefWidth="157.0" style="-fx-background-color: #60b39b;" text="Votează" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.39999999999998" AnchorPane.topAnchor="502.0">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <TextField fx:id="txtFirstName" layoutX="244.0" layoutY="89.0" prefHeight="34.0" prefWidth="178.0" promptText="Prenume" AnchorPane.leftAnchor="227.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="89.0">
+               </cursor></TextField>
+            <TextField fx:id="txtFirstName" layoutX="252.0" layoutY="90.0" prefHeight="42.0" prefWidth="198.0" promptText="Prenume" AnchorPane.leftAnchor="252.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="90.0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -73,7 +41,21 @@
                   <Cursor fx:constant="TEXT" />
                </cursor>
             </TextField>
-            <PasswordField fx:id="passConfirmPassword" layoutX="24.0" layoutY="264.0" prefHeight="34.0" prefWidth="374.0" promptText="Confirmă Parolă" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="264.0">
+            <TextField fx:id="txtEmail" layoutX="27.0" layoutY="167.0" prefHeight="42.0" prefWidth="424.0" promptText="Email" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="157.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor></TextField>
+            <PasswordField fx:id="passPassword" layoutX="26.0" layoutY="230.0" prefHeight="42.0" prefWidth="424.0" promptText="Parolă" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="230.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor></PasswordField>
+            <PasswordField fx:id="passConfirmPassword" layoutX="27.0" layoutY="298.0" prefHeight="42.0" prefWidth="424.0" promptText="Confirmă Parolă" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="298.0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -81,44 +63,77 @@
                   <Cursor fx:constant="TEXT" />
                </cursor>
             </PasswordField>
-            <Label fx:id="lblLastName" layoutX="27.0" layoutY="123.0" prefHeight="20.0" prefWidth="260.0" textFill="RED" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="151.0" AnchorPane.topAnchor="123.0">
+            <DatePicker fx:id="dateBirthday" layoutX="26.0" layoutY="369.0" prefHeight="42.0" prefWidth="424.0" promptText="Data Nașterii" showWeekNumbers="true" style="-fx-background-color: #ffffff;" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="369.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></DatePicker>
+            <ComboBox fx:id="comboGender" layoutX="26.0" layoutY="443.0" prefHeight="42.0" prefWidth="424.0" promptText="Gen" style="-fx-background-color: #ffffff;" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="443.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></ComboBox>
+            <TextField fx:id="txtCNP" layoutX="26.0" layoutY="513.0" prefHeight="42.0" prefWidth="424.0" promptText="CNP" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="513.0">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor></TextField>
+            <Button fx:id="btnVote" defaultButton="true" layoutX="139.0" layoutY="580.0" mnemonicParsing="false" onAction="#setOnAction" prefHeight="42.0" prefWidth="198.0" style="-fx-background-color: #d63b27;" text="Votează" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="139.0" AnchorPane.rightAnchor="141.0" AnchorPane.topAnchor="580.0">
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Label fx:id="lblLastName" layoutX="27.0" layoutY="132.0" prefHeight="20.0" prefWidth="260.0" textFill="WHITE" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="151.0" AnchorPane.topAnchor="132.0">
+               <font>
+                  <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="lblFirstName" layoutX="187.0" layoutY="123.0" prefHeight="20.0" prefWidth="222.0" textFill="RED" AnchorPane.leftAnchor="187.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="123.0">
+            <Label fx:id="lblFirstName" layoutX="187.0" layoutY="132.0" prefHeight="20.0" prefWidth="222.0" textFill="WHITE" AnchorPane.leftAnchor="187.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="132.0">
                <font>
-                  <Font size="14.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="lblEmail" layoutX="27.0" layoutY="181.0" prefHeight="20.0" prefWidth="384.0" textFill="RED" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="181.0">
+            <Label fx:id="lblEmail" layoutX="27.0" layoutY="199.0" prefHeight="20.0" prefWidth="384.0" textFill="WHITE" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="199.0">
                <font>
-                  <Font size="14.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="lblPassword" layoutX="27.0" layoutY="242.0" prefHeight="20.0" prefWidth="384.0" textFill="RED" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="242.0">
+            <Label fx:id="lblPassword" layoutX="26.0" layoutY="272.0" prefHeight="20.0" prefWidth="384.0" textFill="WHITE" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="272.0">
                <font>
-                  <Font size="14.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="lblConfirmPassword" layoutX="27.0" layoutY="298.0" prefHeight="20.0" prefWidth="384.0" textFill="RED" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="298.0">
+            <Label fx:id="lblConfirmPassword" layoutX="27.0" layoutY="340.0" prefHeight="20.0" prefWidth="384.0" textFill="WHITE" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="340.0">
                <font>
-                  <Font size="14.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="lblBirthday" layoutX="27.0" layoutY="360.0" prefHeight="20.0" prefWidth="384.0" textFill="RED" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="360.0">
+            <Label fx:id="lblBirthday" layoutX="27.0" layoutY="411.0" prefHeight="20.0" prefWidth="384.0" textFill="WHITE" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="411.0">
                <font>
-                  <Font size="14.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="lblGender" layoutX="27.0" layoutY="419.0" prefHeight="20.0" prefWidth="384.0" textFill="RED" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="419.0">
+            <Label fx:id="lblGender" layoutX="27.0" layoutY="485.0" prefHeight="20.0" prefWidth="384.0" textFill="WHITE" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="485.0">
                <font>
-                  <Font size="14.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="lblCNP" layoutX="27.0" layoutY="483.0" prefHeight="20.0" prefWidth="384.0" textFill="RED" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="483.0">
+            <Label fx:id="lblCNP" layoutX="26.0" layoutY="555.0" prefHeight="20.0" prefWidth="384.0" textFill="WHITE" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="555.0">
                <font>
-                  <Font size="14.0" />
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnLogIn" layoutX="357.0" layoutY="645.0" mnemonicParsing="false" onAction="#goToLogIn" prefHeight="42.0" prefWidth="108.0" style="-fx-background-color: #27b882;" text="Conectare" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Label alignment="CENTER" layoutX="223.0" layoutY="652.0" text="Aveți deja cont?" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
                </font>
             </Label>
          </children>
@@ -126,10 +141,10 @@
             <Insets top="10.0" />
          </padding>
       </AnchorPane>
-      <Label layoutX="89.0" layoutY="60.0" text="Votează!" textAlignment="CENTER">
-         <font>
-            <Font name="Arial Bold" size="36.0" />
-         </font>
-      </Label>
+      <ImageView fitHeight="333.0" fitWidth="424.0" layoutX="86.0" layoutY="226.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@assets/vote3.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

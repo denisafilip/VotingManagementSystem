@@ -1,5 +1,7 @@
 package election;
 
+import election.enums.typeOfElection;
+
 import java.time.Year;
 
 public class Referendum {
