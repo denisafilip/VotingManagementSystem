@@ -20,6 +20,11 @@ public class Election {
         addPoliticalParties();
     }
 
+    public Election(typeOfElection type, Year yearOfElection) {
+        this.type = type;
+        this.yearOfElection = yearOfElection;
+    }
+
     public Election(typeOfElection type, Year yearOfElection, durationOfMandate mandate, double electoralThreshold) {
         this.type = type;
         this.yearOfElection = yearOfElection;
@@ -64,5 +69,13 @@ public class Election {
 
     public void setPoliticalParties(Map<String, PoliticalParty> politicalParties) {
         this.politicalParties = politicalParties;
+    }
+
+    public typeOfElection getType() {
+        return type;
+    }
+
+    public void setType(typeOfElection type) {
+        this.type = type;
     }
 }

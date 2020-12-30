@@ -1,9 +1,11 @@
 package JavaFX.admin;
 
-import JavaFX.database.ParentController;
+import JavaFX.ParentController;
 import country.Country;
 import country.County;
 import election.Election;
+import election.referendum.Referendum;
+import election.referendum.ReferendumPosition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,13 +17,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import politicalParty.PoliticalParty;
+import vote.ReferendumPairVote;
 import webScraping.Scraping;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -39,7 +44,14 @@ public class AdminController extends ParentController implements Initializable {
     @FXML private ImageView imgVotesPRU;
 
     @FXML private Label lblElection;
+    @FXML private Label lblVoteAttendance;
+    @FXML private Label lblVoteAttendance2;
     @FXML private AnchorPane anchorPane;
+
+    @FXML private Label lblS;
+    @FXML private Label lblCD;
+    @FXML private Line line1;
+    @FXML private Line line2;
 
     private final CategoryAxis xAxis = new CategoryAxis();
     private final NumberAxis yAxis = new NumberAxis();
@@ -47,12 +59,22 @@ public class AdminController extends ParentController implements Initializable {
     @FXML private final BarChart<String, Number> barChartRef1 = new BarChart<>(xAxis, yAxis);
     @FXML private final BarChart<String, Number> barChartRef2 = new BarChart<>(xAxis, yAxis);
 
+    private final DecimalFormat doubleFormat = new DecimalFormat("#.000000000");
+    private final int DISTANCE_BETWEEN_LABELS = 80;
+    private final int START_LAYOUT_Y = 60;
+    private final int LAYOUT_X_FIRST_LABELS = 901;
+    private final int LAYOUT_X_SECOND_LABELS = 1013;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lblElection.setText(buttonPressed);
+
         if (buttonPressed.equals("ADMIN - STATISTICI VOT - Referendum")) {
             displayVotesReferendum();
+        } else if (buttonPressed.equals("ADMIN - STATISTICI VOT - Alegeri Parlamentare")) {
+            displayVotesForParliamentElection();
+            displayVotesPoliticalPartiesParliament();
         } else {
             displayVotesPoliticalParties();
             displayVotesCounties();
@@ -71,26 +93,28 @@ public class AdminController extends ParentController implements Initializable {
         barChartRef1.setVisible(true);
         barChartRef2.setVisible(true);
 
-        setUpBarChartForReferendum(Romania, barChartRef1, "Voturi pe Județe Întrebare 1 Referendum", "noOfYesReferendumVotes", "noOfNoReferendumVotes");
-        setUpBarChartForReferendum(Romania, barChartRef2, "Voturi pe Județe Întrebare 2 Referendum", "noOfYesReferendum2Votes", "noOfNoReferendum2Votes");
+        setUpBarChartForReferendum(Romania, barChartRef1, "Voturi pe Județe Întrebare 1 Referendum", getFirstReferendum());
+        setUpBarChartForReferendum(Romania, barChartRef2, "Voturi pe Județe Întrebare 2 Referendum", getSecondReferendum());
 
         changeVisibilityOfImageViews();
+       /* double voteAttendanceReferendum1 = computeVoteAttendance("noOfYesReferendumVotes") + computeVoteAttendance("noOfNoReferendumVotes");
+        double voteAttendanceReferendum2 = computeVoteAttendance("noOfYesReferendum2Votes") + computeVoteAttendance("noOfNoReferendum2Votes");
 
-        int noOfVotesYes1 = 0, noOfVotesYes2 = 0, noOfVotesNo1 = 0, noOfVotesNo2 = 0;
+        lblVoteAttendance.setText("Prezență vot întrebare 1 - " + doubleFormat.format(voteAttendanceReferendum1) + "%");
+        lblVoteAttendance2.setText("Prezență vot întrebare 2 - " + doubleFormat.format(voteAttendanceReferendum2) + "%");*/
+
         for (County c : Romania.getCounties()) {
-            noOfVotesYes1 += getNoOfVotesCounty("noOfYesReferendumVotes", c.getCountyName());
-            noOfVotesYes2 += getNoOfVotesCounty("noOfYesReferendum2Votes", c.getCountyName());
-            noOfVotesNo1 += getNoOfVotesCounty("noOfNoReferendumVotes", c.getCountyName());
-            noOfVotesNo2 += getNoOfVotesCounty("noOfNoReferendum2Votes", c.getCountyName());
+            getFirstReferendum().getReferendumVotes().increaseNumberOfVotes(getNoOfVotesCountyReferendum(getFirstReferendum(), c.getCountyName()));
+            getSecondReferendum().getReferendumVotes().increaseNumberOfVotes(getNoOfVotesCountyReferendum(getSecondReferendum(), c.getCountyName()));
         }
         final int layoutX = 815;
         int layoutY = 228;
         int distanceBetweenLabels = 80;
 
-        createLabelForReferendum(layoutY, layoutX, noOfVotesYes1, 1, "pro");
-        createLabelForReferendum(layoutY + distanceBetweenLabels, layoutX, noOfVotesNo1, 1, "contra");
-        createLabelForReferendum(layoutY + 2*distanceBetweenLabels, layoutX, noOfVotesYes2, 2, "pro");
-        createLabelForReferendum(layoutY + 3*distanceBetweenLabels, layoutX, noOfVotesNo2, 2, "contra");
+        createLabelForReferendum(layoutY, layoutX, getFirstReferendum().getReferendumVotes().getProVote().getNoOfVotes(), 1, ReferendumPosition.PRO.getLabel());
+        createLabelForReferendum(layoutY + distanceBetweenLabels, layoutX, getFirstReferendum().getReferendumVotes().getAgainstVote().getNoOfVotes(), 1, "Contra");
+        createLabelForReferendum(layoutY + 2*distanceBetweenLabels, layoutX, getSecondReferendum().getReferendumVotes().getProVote().getNoOfVotes(), 2, ReferendumPosition.PRO.getLabel());
+        createLabelForReferendum(layoutY + 3*distanceBetweenLabels, layoutX, getSecondReferendum().getReferendumVotes().getAgainstVote().getNoOfVotes(), 2, "Contra");
 
     }
 
@@ -115,15 +139,14 @@ public class AdminController extends ParentController implements Initializable {
         anchorPane.getChildren().add(lbl);
     }
 
-    public void setUpBarChartForReferendum(Country Romania, BarChart<String, Number> barChart, String barChartTitle, String yesVotes, String noVotes) {
+    public void setUpBarChartForReferendum(Country Romania, BarChart<String, Number> barChart, String barChartTitle, Referendum referendum) {
         barChart.setTitle(barChartTitle);
         Romania.sortCountiesAlphabetically(Romania);
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Număr de voturi");
         for (County c : Romania.getCounties()) {
-            int noOfVotesNo = getNoOfVotesCounty(noVotes, c.getCountyName());
-            int noOfVotesYes = getNoOfVotesCounty(yesVotes, c.getCountyName());
-            series.getData().add(new XYChart.Data<>(c.getCountyName(), noOfVotesYes + noOfVotesNo));
+            ReferendumPairVote referendumPairVote = getNoOfVotesCountyReferendum(referendum, c.getCountyName());
+            series.getData().add(new XYChart.Data<>(c.getCountyName(), referendumPairVote.getTotalVotesReferendum()));
         }
         barChart.getData().add(series);
     }
@@ -131,60 +154,89 @@ public class AdminController extends ParentController implements Initializable {
     public void displayVotesCounties() {
         Scraping scraper = new Scraping();
         Country Romania = scraper.webScrapingCounties();
+
         barChartCounties.setVisible(true);
         barChartRef1.setVisible(false);
         barChartRef2.setVisible(false);
         barChartCounties.setTitle("Voturi pe Județe");
         Romania.sortCountiesAlphabetically(Romania);
-        String typeOfVote = setTypeOfVote();
+        Election typeOfVote = setTypeOfElection();
+        lblVoteAttendance.setText("Prezență vot - " + doubleFormat.format(computeVoteAttendance(typeOfVote)) + "%");
+        getDataForBarChart(Romania, typeOfVote, "Număr de voturi");
+    }
+
+    public void displayVotesForParliamentElection() {
+        Scraping scraper = new Scraping();
+        Country Romania = scraper.webScrapingCounties();
+
+        barChartCounties.setVisible(true);
+        barChartRef1.setVisible(false);
+        barChartRef2.setVisible(false);
+        barChartCounties.setTitle("Voturi pe Județe");
+        Romania.sortCountiesAlphabetically(Romania);
+        lblVoteAttendance.setText("Prezență vot Senat - " + doubleFormat.format(computeVoteAttendance(getSenateParliamentElection())) + "%");
+        lblVoteAttendance2.setText("Prezență vot Camera Deputaților - " + doubleFormat.format(computeVoteAttendance(getDeputiesParliamentElection())) + "%");
+        getDataForBarChart(Romania, getSenateParliamentElection(), "Număr de voturi Senat");
+        getDataForBarChart(Romania, getDeputiesParliamentElection(), "Număr de voturi Camera Deputaților");
+    }
+
+    public void getDataForBarChart(Country country, Election typeOfVote, String titleOfSeries) {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Număr de voturi");
-        for (County c : Romania.getCounties()) {
+        series.setName(titleOfSeries);
+        for (County c : country.getCounties()) {
             int noOfVotes = getNoOfVotesCounty(typeOfVote, c.getCountyName());
             series.getData().add(new XYChart.Data<>(c.getCountyName(), noOfVotes));
         }
         barChartCounties.getData().add(series);
-
     }
 
-    public void displayVotesPoliticalParties() {
-        Election election = new Election();
-
-        final int DISTANCE_BETWEEN_LABELS = 80;
-        final int LAYOUT_X = 931;
-        int layoutY = 60;
-        xAxis.setLabel("Județ");
-        yAxis.setLabel("Voturi");
-        String typeOfVote = setTypeOfVote();
-        System.out.println(typeOfVote);
-        for (Map.Entry<String, PoliticalParty> entry : election.getPoliticalParties().entrySet()) {
+    public void displayVotesPoliticalPartiesParliament() {
+        int layoutY = START_LAYOUT_Y;
+        line1.setVisible(true);
+        line2.setVisible(true);
+        lblS.setVisible(true);
+        lblCD.setVisible(true);
+        Election senate = getSenateParliamentElection();
+        Election chamberOfDeputies = getDeputiesParliamentElection();
+        for (Map.Entry<String, PoliticalParty> entry : senate.getPoliticalParties().entrySet()) {
             PoliticalParty p = entry.getValue();
-            int noOfVotes = getNoOfVotesPoliticalParty(typeOfVote, p.getAbbreviation());
-            System.out.println(noOfVotes);
-            Label lbl = new Label();
-            lbl.setText("voturi: " + noOfVotes);
-            lbl.setLayoutX(LAYOUT_X);
-            lbl.setLayoutY(layoutY);
-            lbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+            createLabelForPoliticalParty(LAYOUT_X_FIRST_LABELS, layoutY, senate, p);
+            createLabelForPoliticalParty(LAYOUT_X_SECOND_LABELS, layoutY, chamberOfDeputies, p);
             layoutY += DISTANCE_BETWEEN_LABELS;
-            anchorPane.getChildren().add(lbl);
         }
     }
 
-    private String setTypeOfVote() {
-        String typeOfVote;
+    public void displayVotesPoliticalParties() {
+        int layoutY = START_LAYOUT_Y;
+        Election typeOfElection = setTypeOfElection();
+        for (Map.Entry<String, PoliticalParty> entry : typeOfElection.getPoliticalParties().entrySet()) {
+            PoliticalParty p = entry.getValue();
+            createLabelForPoliticalParty(LAYOUT_X_FIRST_LABELS, layoutY, typeOfElection, p);
+            layoutY += DISTANCE_BETWEEN_LABELS;
+        }
+    }
+
+    public void createLabelForPoliticalParty(int layoutX, int layoutY, Election election, PoliticalParty p) {
+        int noOfVotes = getNoOfVotesPoliticalParty(election, p.getAbbreviation());
+        Label lbl = new Label();
+        lbl.setText("voturi: " + noOfVotes);
+        lbl.setLayoutX(layoutX);
+        lbl.setLayoutY(layoutY);
+        lbl.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        anchorPane.getChildren().add(lbl);
+    }
+
+    private Election setTypeOfElection() {
+        Election typeOfVote;
         switch (buttonPressed) {
             case "ADMIN - STATISTICI VOT - Alegeri Europarlamentare":
-                typeOfVote = "noOfEuroVotes";
+                typeOfVote = getEuropeanParliamentElection();
                 break;
             case "ADMIN - STATISTICI VOT - Alegeri Prezidențiale":
-                typeOfVote = "noOfPresidentialVotes";
-                break;
-            case "ADMIN - STATISTICI VOT - Alegeri Parlamentare":
-                typeOfVote = "noOfParliamentVotes";
+                typeOfVote = getPresidentialElection();
                 break;
             case "ADMIN - STATISTICI VOT - Alegeri Locale":
-                typeOfVote = "noOfLocalVotes";
+                typeOfVote = getLocalElection();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + buttonPressed);

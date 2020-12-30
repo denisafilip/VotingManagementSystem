@@ -2,7 +2,9 @@ package user;
 
 import country.Country;
 import country.County;
+import election.enums.typeOfElection;
 import javafx.scene.control.Label;
+import vote.UserVote;
 import webScraping.Scraping;
 
 import java.time.LocalDate;
@@ -20,12 +22,13 @@ public class User {
     private County county;
     private String mail;
     private String password;
-    private boolean hasVotedPresidential;
-    private boolean hasVotedEuro;
-    private boolean hasVotedParliament;
-    private boolean hasVotedLocal;
-    private boolean hasVotedReferendum;
-    private boolean hasVotedReferendum2;
+    private UserVote presidential;
+    private UserVote europeanParliament;
+    private UserVote local;
+    private UserVote firstReferendum;
+    private UserVote secondReferendum;
+    private UserVote senateParliament;
+    private UserVote deputiesParliament;
     private boolean isAdmin;
 
     public User() {
@@ -41,9 +44,7 @@ public class User {
         this.password = password;
     }
 
-    public User(String mail, String password, String firstName, String lastName, String gender, String CNP, LocalDate dateOfBirth,
-                boolean hasVotedPresidential, boolean hasVotedEuro, boolean hasVotedParliament, boolean hasVotedLocal, boolean hasVotedReferendum,
-                boolean hasVotedReferendum2) {
+    public User(String mail, String password, String firstName, String lastName, String gender, String CNP, LocalDate dateOfBirth) {
         this.mail = mail;
         this.password = password;
         this.firstName = firstName;
@@ -53,13 +54,28 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.age = computeUserAge();
         if (verifyCNP(null)) this.county = assignUserToCounty();
-        this.hasVotedEuro = hasVotedEuro;
-        this.hasVotedLocal = hasVotedLocal;
-        this.hasVotedPresidential = hasVotedPresidential;
-        this.hasVotedParliament = hasVotedParliament;
-        this.hasVotedReferendum = hasVotedReferendum;
-        this.hasVotedReferendum2 = hasVotedReferendum2;
+        initializeVotes(false);
         this.isAdmin = this.mail.equals(ADMIN_EMAIL);
+    }
+
+    public void setVotingStatus(boolean status) {
+        this.europeanParliament.setStatus(status);
+        this.local.setStatus(status);
+        this.deputiesParliament.setStatus(status);
+        this.senateParliament.setStatus(status);
+        this.firstReferendum.setStatus(status);
+        this.secondReferendum.setStatus(status);
+        this.presidential.setStatus(status);
+    }
+
+    public void initializeVotes(boolean status) {
+        this.europeanParliament = new UserVote(typeOfElection.EUROPEAN_PARLIAMENT, status);
+        this.senateParliament = new UserVote(typeOfElection.SENATE_PARLIAMENT, status);
+        this.deputiesParliament = new UserVote(typeOfElection.CHAMBER_OF_DEPUTIES_PARLIAMENT, status);
+        this.local = new UserVote(typeOfElection.LOCAL, status);
+        this.presidential = new UserVote(typeOfElection.PRESIDENTIAL, status);
+        this.firstReferendum = new UserVote(typeOfElection.REFERENDUM_QUESTION_1, status);
+        this.secondReferendum = new UserVote(typeOfElection.REFERENDUM_QUESTION_2, status);
     }
 
     public String getFirstName() {
@@ -93,51 +109,6 @@ public class User {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
-    public boolean hasVotedPresidential() {
-        return hasVotedPresidential;
-    }
-
-    public void setHasVotedPresidential(boolean hasVotedPresidential) {
-        this.hasVotedPresidential = hasVotedPresidential;
-    }
-
-    public boolean hasVotedEuro() {
-        return hasVotedEuro;
-    }
-
-    public void setHasVotedEuro(boolean hasVotedEuro) {
-        this.hasVotedEuro = hasVotedEuro;
-    }
-
-    public boolean hasVotedParliament() {
-        return hasVotedParliament;
-    }
-
-    public void setHasVotedParliament(boolean hasVotedParliament) {
-        this.hasVotedParliament = hasVotedParliament;
-    }
-
-    public boolean hasVotedLocal() {
-        return hasVotedLocal;
-    }
-
-    public void setHasVotedLocal(boolean hasVotedLocal) {
-        this.hasVotedLocal = hasVotedLocal;
-    }
-
-    public boolean hasVotedReferendum() {
-        return hasVotedReferendum;
-    }
-
-    public void setHasVotedReferendum(boolean hasVotedReferendum) {
-        this.hasVotedReferendum = hasVotedReferendum;
-    }
-
-    public Boolean hasVotedReferendum2() {
-        return hasVotedReferendum2;
-    }
-
 
     public String getMail() {
         return mail;
@@ -185,6 +156,34 @@ public class User {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public boolean getPresidential() {
+        return presidential.getStatus();
+    }
+
+    public boolean getEuropeanParliament() {
+        return europeanParliament.getStatus();
+    }
+
+    public boolean getLocal() {
+        return local.getStatus();
+    }
+
+    public boolean getFirstReferendum() {
+        return firstReferendum.getStatus();
+    }
+
+    public boolean getSecondReferendum() {
+        return secondReferendum.getStatus();
+    }
+
+    public boolean getSenateParliament() {
+        return senateParliament.getStatus();
+    }
+
+    public boolean getDeputiesParliament() {
+        return deputiesParliament.getStatus();
     }
 
     /**
@@ -285,6 +284,26 @@ public class User {
     }
 
 
+    /**
+     *
+     * @return true if user's input birthday is the same as the one obtained from the CNP
+     */
+    public int verifyDateOfBirth() {
+        String birthYear;
+        if (this.CNP.charAt(0) == '6' || this.CNP.charAt(0) == '5') {
+            birthYear = "20" + this.CNP.charAt(1) + this.CNP.charAt(2);
+        } else {
+            birthYear = "19" + this.CNP.charAt(1) + this.CNP.charAt(2);
+        }
+        System.out.println(birthYear);
+        int birthMonth = (this.CNP.charAt(3) - '0')*10 + (this.CNP.charAt(4) - '0');
+        System.out.println(birthMonth);
+        int birthDay = (this.CNP.charAt(5) - '0')*10 + (this.CNP.charAt(6) - '0');
+        System.out.println(birthDay);
+        LocalDate userDOB = LocalDate.of(Integer.parseInt(birthYear), birthMonth, birthDay);
+        System.out.println(userDOB);
+        return userDOB.compareTo(this.dateOfBirth);
+    }
 
 
 }

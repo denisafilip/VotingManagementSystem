@@ -14,7 +14,7 @@ public class LocalElection extends Election {
     List<Candidate> presidentCountyCouncil;
 
     public LocalElection(Year yearOfElection, double electoralThreshold) {
-        super(typeOfElection.L, yearOfElection, durationOfMandate.FOUR_YEARS, electoralThreshold);
+        super(typeOfElection.LOCAL, yearOfElection, durationOfMandate.FOUR_YEARS, electoralThreshold);
     }
 
     public List<Candidate> getCityCouncil() {

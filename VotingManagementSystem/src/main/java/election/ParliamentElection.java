@@ -14,8 +14,8 @@ public class ParliamentElection extends Election {
     private List<Candidate> chamberOfDeputies;
     private List<Candidate> senate;
 
-    public ParliamentElection(Year yearOfElection, double electoralThreshold) {
-        super(typeOfElection.PA, yearOfElection, durationOfMandate.FOUR_YEARS, electoralThreshold);
+    public ParliamentElection(typeOfElection type, Year yearOfElection, double electoralThreshold) {
+        super(type, yearOfElection, durationOfMandate.FOUR_YEARS, electoralThreshold);
     }
 
     public List<Candidate> getChamberOfDeputies() {

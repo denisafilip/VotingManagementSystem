@@ -1,9 +1,6 @@
 package JavaFX.elections;
 
-import JavaFX.database.ParentController;
-import election.Election;
-import election.PresidentialElection;
-import election.enums.numberOfRound;
+import JavaFX.ParentController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,7 +10,6 @@ import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.Year;
 import java.util.ResourceBundle;
 
 public class PresidentialController extends ParentController implements Initializable  {
@@ -38,51 +34,49 @@ public class PresidentialController extends ParentController implements Initiali
     @FXML private Button btnVotePOL;
     @FXML private Button btnVotePRU;
 
-    private final Election presidentialElection = new PresidentialElection(Year.of(2019), 5, numberOfRound.ONE);
-
     public void goBackToElection(ActionEvent event) throws IOException {
         changeScene(event, "/electionType.fxml", "Alegeri");
     }
 
     public void voteUSR() {
-        placeVote(imgVotedUSR, btnVoteUSR, presidentialElection, "noOfPresidentialVotes", "hasVotedPresidential", "USR PLUS", CNP);
+        placeVote(imgVotedUSR, btnVoteUSR, getPresidentialElection(), "USR PLUS", CNP);
     }
 
     public void votePNL() {
-        placeVote(imgVotedPNL, btnVotePNL, presidentialElection, "noOfPresidentialVotes", "hasVotedPresidential", "PNL", CNP);
+        placeVote(imgVotedPNL, btnVotePNL, getPresidentialElection(), "PNL", CNP);
     }
 
     public void votePSD() {
-        placeVote(imgVotedPSD, btnVotePSD, presidentialElection, "noOfPresidentialVotes", "hasVotedPresidential", "PSD", CNP);
+        placeVote(imgVotedPSD, btnVotePSD, getPresidentialElection(), "PSD", CNP);
     }
 
     public void voteUDMR() {
-        placeVote(imgVotedUDMR, btnVoteUDMR, presidentialElection, "noOfPresidentialVotes", "hasVotedPresidential", "UDMR", CNP);
+        placeVote(imgVotedUDMR, btnVoteUDMR, getPresidentialElection(), "UDMR", CNP);
     }
 
     public void votePMP() {
-        placeVote(imgVotedPMP, btnVotePMP, presidentialElection, "noOfPresidentialVotes", "hasVotedPresidential", "PMP", CNP);
+        placeVote(imgVotedPMP, btnVotePMP, getPresidentialElection(), "PMP", CNP);
     }
 
     public void voteAUR() {
-        placeVote(imgVotedAUR, btnVoteAUR, presidentialElection, "noOfPresidentialVotes", "hasVotedPresidential", "AUR", CNP);
+        placeVote(imgVotedAUR, btnVoteAUR, getPresidentialElection(), "AUR", CNP);
     }
 
     public void votePRO() {
-        placeVote(imgVotedPRO, btnVotePRO, presidentialElection, "noOfPresidentialVotes", "hasVotedPresidential", "PRO România", CNP);
+        placeVote(imgVotedPRO, btnVotePRO, getPresidentialElection(), "PRO România", CNP);
     }
 
     public void votePOL() {
-        placeVote(imgVotedPOL, btnVotePOL, presidentialElection, "noOfPresidentialVotes", "hasVotedPresidential", "POL", CNP);
+        placeVote(imgVotedPOL, btnVotePOL, getPresidentialElection(), "POL", CNP);
     }
 
     public void votePRU() {
-        placeVote(imgVotedPRU, btnVotePRU, presidentialElection, "noOfPresidentialVotes", "hasVotedPresidential", "PRU", CNP);
+        placeVote(imgVotedPRU, btnVotePRU, getPresidentialElection(), "PRU", CNP);
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        lblElection.setText("ALEGERI PREZIDENȚIALE - " + presidentialElection.getYearOfElection());
+        lblElection.setText("ALEGERI PREZIDENȚIALE - " + getPresidentialElection().getYearOfElection());
     }
 }

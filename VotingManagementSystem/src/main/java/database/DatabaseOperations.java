@@ -1,7 +1,13 @@
 package database;
 
 import country.County;
+import election.Election;
+import election.enums.typeOfElection;
+import election.referendum.Referendum;
+import election.referendum.ReferendumPosition;
 import politicalParty.PoliticalParty;
+import vote.ReferendumPairVote;
+import vote.ReferendumVote;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -9,7 +15,7 @@ import java.time.LocalDate;
 public class DatabaseOperations {
 
     /** Queries for database, used in prepared statements */
-    private static final String INSERT_USER = "INSERT INTO [dbo].[User] VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_USER = "INSERT INTO [dbo].[User] VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SELECT_FROM_COUNTY = "SELECT id FROM [dbo].[County] WHERE name = ?";
     private static final String VALIDATE_USER = "SELECT * from [dbo].[User] WHERE mail = ? and password = ? or CNP = ?";
     private static final String FIND_USER_FROM_CNP = "SELECT * from [dbo].[User] WHERE CNP = ?";
@@ -17,6 +23,8 @@ public class DatabaseOperations {
     private static final String IS_USER_AN_ADMIN = "SELECT isAdmin from [dbo].[User] WHERE CNP = ?";
     private static final String MAKE_USER_AN_ADMIN = "UPDATE [dbo].[User] SET isAdmin = 'true' WHERE mail = ?";
     private static final String GET_USER_BY_MAIL_AND_PASSWORD = "SELECT * from [dbo].[User] WHERE mail = ? and password = ?";
+
+    private static final double NO_OF_VOTERS_IN_ROMANIA = 18191396;
 
     /** Realizes the connection to the database only once for the entire project */
     static Connection conn = DatabaseConnection.getConnection();
@@ -67,13 +75,13 @@ public class DatabaseOperations {
      * @param hasVotedPresidential - false at this point, because the user only registered, it did not vote yet
      * @param hasVotedEuro - false at this point, because the user only registered, it did not vote yet
      * @param hasVotedLocal - false at this point, because the user only registered, it did not vote yet
-     * @param hasVotedParliament - false at this point, because the user only registered, it did not vote yet
      * @param hasVotedReferendum - false at this point, because the user only registered, it did not vote yet
      * inserts user's data into User table, from Microsoft SQL Server Database
      */
     public void insertUserIntoDatabase(String firstName, String lastName, String email, String password, String gender, LocalDate dateOfBirth,
                                        int age, String CNP, County county, Boolean hasVotedPresidential, Boolean hasVotedEuro,
-                                       Boolean hasVotedLocal, Boolean hasVotedParliament, Boolean hasVotedReferendum, Boolean hasVotedReferendum2, Boolean isAdmin) {
+                                       Boolean hasVotedLocal, Boolean hasVotedReferendum, Boolean hasVotedReferendum2,
+                                       Boolean isAdmin, Boolean hasVotedDeputiesParliament, Boolean hasVotedSenateParliament) {
         PreparedStatement preparedStatement = null;
         PreparedStatement selectFromCounty = null;
         ResultSet resultSet = null;
@@ -101,10 +109,11 @@ public class DatabaseOperations {
             preparedStatement.setBoolean(10, hasVotedPresidential);
             preparedStatement.setBoolean(11, hasVotedEuro);
             preparedStatement.setBoolean(12, hasVotedLocal);
-            preparedStatement.setBoolean(13, hasVotedParliament);
-            preparedStatement.setBoolean(14, hasVotedReferendum);
-            preparedStatement.setBoolean(15, hasVotedReferendum2);
-            preparedStatement.setBoolean(16, isAdmin);
+            preparedStatement.setBoolean(13, hasVotedReferendum);
+            preparedStatement.setBoolean(14, hasVotedReferendum2);
+            preparedStatement.setBoolean(15, isAdmin);
+            preparedStatement.setBoolean(16, hasVotedSenateParliament);
+            preparedStatement.setBoolean(17, hasVotedDeputiesParliament);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -189,10 +198,10 @@ public class DatabaseOperations {
 
     /**
      * @param CNP - CNP of user
-     * @param typeOfVote - vote to be checked for (presidential, euro, local, parliament, referendum)
+     * @param election - the election for which we want to increment the number of votes (presidential, euro, local, parliament)
      * @return true if user has voted, false on the contrary
      */
-    public Boolean hasUserVoted(String CNP, String typeOfVote) {
+    public Boolean hasUserVoted(String CNP, Election election) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
@@ -202,7 +211,7 @@ public class DatabaseOperations {
             resultSet = preparedStatement.executeQuery();
             boolean hasVoted = false;
             while(resultSet.next()) {
-                hasVoted = resultSet.getBoolean(typeOfVote);
+                hasVoted = resultSet.getBoolean(election.getType().getLabel());
             }
             return hasVoted;
         } catch (SQLException e) {
@@ -216,14 +225,14 @@ public class DatabaseOperations {
 
     /**
      * Function that increments the number of specific votes of a political party in the PoliticalParty table from the SQL Server database, after an user has voted for them
-     * @param typeOfVote - the type of vote we want to increment (presidential, euro, local, parliament)
+     * @param election - the election for which we want to increment the number of votes (presidential, euro, local, parliament)
      * @param politicalParty - the political party for which we want to increment the number of votes
      */
-    public void incrementVotesForParty(String typeOfVote, PoliticalParty politicalParty) {
+    public void incrementVotesForParty(Election election, PoliticalParty politicalParty) {
         Statement statement = null;
         try {
             statement = conn.createStatement();
-            String query = "UPDATE [dbo].[PoliticalParty] SET " + typeOfVote + " = " + typeOfVote + " + 1 WHERE abbreviation = '" + politicalParty.getAbbreviation() + "'";
+            String query = "UPDATE [dbo].[PoliticalParty] SET " + election.getType().getLabel() + " = " + election.getType().getLabel() + " + 1 WHERE abbreviation = '" + politicalParty.getAbbreviation() + "'";
             statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -235,11 +244,11 @@ public class DatabaseOperations {
     /** After an user placed his vote, change his voting status for the respective election to true - this doesn't allow an user to vot multiple
      * times in the same election.
      */
-    public void updateUserVotingStatus(String typeOfVote, String CNP) {
+    public void updateUserVotingStatus(Election election, String CNP) {
         Statement statement = null;
         try {
             statement = conn.createStatement();
-            String query = "UPDATE [dbo].[User] SET " + typeOfVote + " = 'true' WHERE CNP = '" + CNP + "'";
+            String query = "UPDATE [dbo].[User] SET " + election.getType().getLabel() + " = 'true' WHERE CNP = '" + CNP + "'";
             statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -263,6 +272,9 @@ public class DatabaseOperations {
             return idCounty;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeResultSet(resultSet);
+            closePreparedStatement(preparedStatement);
         }
         return 0;
     }
@@ -287,11 +299,27 @@ public class DatabaseOperations {
     }
 
     /** After an user has voted, increment the total number of votes placed in the user's county */
-    public void incrementVotesForCounty(String typeOfVote, String CNP) {
+    public void incrementVotesForCounty(Election election, String CNP) {
         Statement increaseNoOfVotesForCounty = null;
         try {
             int idCounty = getUserCountyById(CNP);
-            String query = "UPDATE [dbo].[County] SET " + typeOfVote + " = " + typeOfVote + " + 1 WHERE id = " + idCounty;
+
+            String query = "UPDATE [dbo].[County] SET " + election.getType().getLabel() + " = " + election.getType().getLabel() + " + 1 WHERE id = " + idCounty;
+            increaseNoOfVotesForCounty = conn.createStatement();
+            increaseNoOfVotesForCounty.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeStatement(increaseNoOfVotesForCounty);
+        }
+    }
+
+    public void incrementVotesForCountyReferendum(Election election, String CNP, String label) {
+        Statement increaseNoOfVotesForCounty = null;
+        try {
+            String voteName = election.getType().getLabel() + label;
+            int idCounty = getUserCountyById(CNP);
+            String query = "UPDATE [dbo].[County] SET " + voteName + " = " + voteName + " + 1 WHERE id = " + idCounty;
             increaseNoOfVotesForCounty = conn.createStatement();
             increaseNoOfVotesForCounty.executeUpdate(query);
         } catch (SQLException e) {
@@ -302,21 +330,21 @@ public class DatabaseOperations {
     }
 
     /**
-     * @param typeOfVote - the type of vote we want to select the number of
+     * @param election - the election for which we want to select the number of votes
      * @param politicalPartyAbbr - abbreviation of the political party whose votes we want to see
      * @return the number of votes of the political party obtained in a specific election
      */
-    public int getNoOfVotesPoliticalParty(String typeOfVote, String politicalPartyAbbr) {
+    public int getNoOfVotesPoliticalParty(Election election, String politicalPartyAbbr) {
         Statement statement = null;
         ResultSet resultSet = null;
         try {
-            String query = "SELECT " + typeOfVote + " FROM [dbo].[PoliticalParty] WHERE abbreviation = '" + politicalPartyAbbr + "'";
+            String query = "SELECT " + election.getType().getLabel() + " FROM [dbo].[PoliticalParty] WHERE abbreviation = '" + politicalPartyAbbr + "'";
             statement = conn.createStatement();
 
             resultSet = statement.executeQuery(query);
             int noOfVotes = 0;
             while (resultSet.next()) {
-                noOfVotes = resultSet.getInt(typeOfVote);
+                noOfVotes = resultSet.getInt(election.getType().getLabel());
             }
             return noOfVotes;
         } catch (SQLException e) {
@@ -329,17 +357,17 @@ public class DatabaseOperations {
     }
 
     /** @return the number of votes placed in a county at a specific type of election */
-    public int getNoOfVotesCounty(String typeOfVote, String countyName) {
+    public int getNoOfVotesCounty(Election election, String countyName) {
         Statement statement = null;
         ResultSet resultSet = null;
         try {
-            String query = "SELECT " + typeOfVote + " FROM [dbo].[County] WHERE name = '" + countyName + "'";
+            String query = "SELECT " + election.getType().getLabel() + " FROM [dbo].[County] WHERE name = N'" + countyName + "'";
             statement = conn.createStatement();
 
             resultSet = statement.executeQuery(query);
             int noOfVotes = 0;
             while (resultSet.next()) {
-                noOfVotes = resultSet.getInt(typeOfVote);
+                noOfVotes = resultSet.getInt(election.getType().getLabel());
             }
             return noOfVotes;
         } catch (SQLException e) {
@@ -349,6 +377,41 @@ public class DatabaseOperations {
             closeStatement(statement);
         }
         return 0;
+    }
+
+    /** @return a pair of Referendum Votes, containing the number of pro and against votes placed in a county for a referendum question*/
+    public ReferendumPairVote getNoOfVotesCountyReferendum(Referendum referendum, String countyName) {
+        Statement statement = null;
+        Statement statement1 = null;
+        ResultSet resultSet = null;
+        ResultSet resultSet1 = null;
+        try {
+            String againstVoteName = referendum.getType().getLabel() + referendum.getReferendumVotes().getAgainstVote().getPosition().getLabel();
+            String proVoteName = referendum.getType().getLabel() + referendum.getReferendumVotes().getProVote().getPosition().getLabel();
+
+            String query2 = "SELECT " + proVoteName + " FROM [dbo].[County] WHERE name = N'" + countyName + "'";
+            String query = "SELECT " + againstVoteName + " FROM [dbo].[County] WHERE name = N'" + countyName + "'";
+            statement = conn.createStatement();
+            statement1 = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+            ReferendumPairVote referendumVotes = new ReferendumPairVote(new ReferendumVote(referendum.getType(), ReferendumPosition.PRO), new ReferendumVote(referendum.getType(), ReferendumPosition.AGAINST));
+            while (resultSet.next()) {
+                referendumVotes.getAgainstVote().setNoOfVotes(resultSet.getInt(againstVoteName));
+            }
+            resultSet1 = statement1.executeQuery(query2);
+            while (resultSet1.next()) {
+                referendumVotes.getProVote().setNoOfVotes(resultSet1.getInt(proVoteName));
+            }
+            return referendumVotes;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResultSet(resultSet);
+            closeResultSet(resultSet1);
+            closeStatement(statement);
+            closeStatement(statement1);
+        }
+        return null;
     }
 
     /** Function that checks the user's admin status, in order to grant him permission to the admin page.
@@ -387,4 +450,24 @@ public class DatabaseOperations {
         }
     }
 
+    public double computeVoteAttendance(Election election) {
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            String query = "SELECT SUM(" + election.getType().getLabel() + ") AS SUM FROM [dbo].[County]";
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+            double sumOfVotes = 0;
+            while (resultSet.next()) {
+                sumOfVotes = resultSet.getInt("SUM");
+            }
+            return (sumOfVotes/NO_OF_VOTERS_IN_ROMANIA) * 100.0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResultSet(resultSet);
+            closeStatement(statement);
+        }
+        return 0.0;
+    }
 }

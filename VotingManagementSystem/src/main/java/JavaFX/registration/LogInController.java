@@ -1,6 +1,6 @@
 package JavaFX.registration;
 
-import JavaFX.database.ParentController;
+import JavaFX.ParentController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

@@ -1,8 +1,6 @@
 package JavaFX.elections;
 
-import JavaFX.database.ParentController;
-import election.Election;
-import election.EuropeanParliamentElection;
+import JavaFX.ParentController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,7 +10,6 @@ import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.Year;
 import java.util.ResourceBundle;
 
 public class EuropeanParliamentController extends ParentController implements Initializable {
@@ -37,51 +34,49 @@ public class EuropeanParliamentController extends ParentController implements In
     @FXML private Button btnVotePOL;
     @FXML private Button btnVotePRU;
 
-    private final Election europeanParliamentElection = new EuropeanParliamentElection(Year.of(2019), 5);
-
     public void goBackToElection(ActionEvent event) throws IOException {
         changeScene(event, "/electionType.fxml", "Alegeri");
     }
 
     public void voteUSR() {
-        placeVote(imgVotedUSR, btnVoteUSR, europeanParliamentElection, "noOfEuroVotes", "hasVotedEuro", "USR PLUS", CNP);
+        placeVote(imgVotedUSR, btnVoteUSR, getEuropeanParliamentElection(), "USR PLUS", CNP);
     }
 
     public void votePNL() {
-        placeVote(imgVotedPNL, btnVotePNL, europeanParliamentElection, "noOfEuroVotes", "hasVotedEuro", "PNL", CNP);
+        placeVote(imgVotedPNL, btnVotePNL, getEuropeanParliamentElection(), "PNL", CNP);
     }
 
     public void votePSD() {
-        placeVote(imgVotedPSD, btnVotePSD, europeanParliamentElection, "noOfEuroVotes", "hasVotedEuro", "PSD", CNP);
+        placeVote(imgVotedPSD, btnVotePSD, getEuropeanParliamentElection(), "PSD", CNP);
     }
 
     public void voteUDMR() {
-        placeVote(imgVotedUDMR, btnVoteUDMR, europeanParliamentElection, "noOfEuroVotes", "hasVotedEuro", "UDMR", CNP);
+        placeVote(imgVotedUDMR, btnVoteUDMR, getEuropeanParliamentElection(), "UDMR", CNP);
     }
 
     public void votePMP() {
-        placeVote(imgVotedPMP, btnVotePMP, europeanParliamentElection, "noOfEuroVotes", "hasVotedEuro", "PMP", CNP);
+        placeVote(imgVotedPMP, btnVotePMP, getEuropeanParliamentElection(), "PMP", CNP);
     }
 
     public void voteAUR() {
-        placeVote(imgVotedAUR, btnVoteAUR, europeanParliamentElection, "noOfEuroVotes", "hasVotedEuro", "AUR", CNP);
+        placeVote(imgVotedAUR, btnVoteAUR, getEuropeanParliamentElection(), "AUR", CNP);
     }
 
     public void votePRO() {
-        placeVote(imgVotedPRO, btnVotePRO, europeanParliamentElection, "noOfEuroVotes", "hasVotedEuro", "PRO România", CNP);
+        placeVote(imgVotedPRO, btnVotePRO, getEuropeanParliamentElection(), "PRO România", CNP);
     }
 
     public void votePOL() {
-        placeVote(imgVotedPOL, btnVotePOL, europeanParliamentElection, "noOfEuroVotes", "hasVotedEuro", "POL", CNP);
+        placeVote(imgVotedPOL, btnVotePOL, getEuropeanParliamentElection(), "POL", CNP);
     }
 
     public void votePRU() {
-        placeVote(imgVotedPRU, btnVotePRU, europeanParliamentElection, "noOfEuroVotes", "hasVotedEuro", "PRU", CNP);
+        placeVote(imgVotedPRU, btnVotePRU, getEuropeanParliamentElection(), "PRU", CNP);
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        lblElection.setText("ALEGERI EUROPARLAMENTARE - " + europeanParliamentElection.getYearOfElection());
+        lblElection.setText("ALEGERI EUROPARLAMENTARE - " + getEuropeanParliamentElection().getYearOfElection());
     }
 }

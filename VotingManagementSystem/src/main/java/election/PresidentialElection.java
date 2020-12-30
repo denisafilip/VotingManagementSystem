@@ -13,7 +13,7 @@ public class PresidentialElection extends Election {
     private ArrayList<Candidate> candidates;
 
     public PresidentialElection(Year yearOfElection, double electoralThreshold, numberOfRound round) {
-        super(typeOfElection.P, yearOfElection, durationOfMandate.FIVE_YEARS, electoralThreshold);
+        super(typeOfElection.PRESIDENTIAL, yearOfElection, durationOfMandate.FIVE_YEARS, electoralThreshold);
         this.round = round;
     }
 
@@ -23,5 +23,9 @@ public class PresidentialElection extends Election {
 
     public void setCandidates(ArrayList<Candidate> candidates) {
         this.candidates = candidates;
+    }
+
+    public numberOfRound getRound() {
+        return round;
     }
 }

@@ -11,7 +11,7 @@ public class EuropeanParliamentElection extends Election {
     private ArrayList<Candidate> candidates;
 
     public EuropeanParliamentElection(Year yearOfElection, double electoralThreshold) {
-        super(typeOfElection.PE, yearOfElection, durationOfMandate.FIVE_YEARS, electoralThreshold);
+        super(typeOfElection.EUROPEAN_PARLIAMENT, yearOfElection, durationOfMandate.FIVE_YEARS, electoralThreshold);
     }
 
     public ArrayList<Candidate> getCandidates() {

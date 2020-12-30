@@ -1,7 +1,7 @@
 package JavaFX.registration;
 
 
-import JavaFX.database.ParentController;
+import JavaFX.ParentController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -97,7 +97,8 @@ public class RegistrationController extends ParentController implements Initiali
             lblCNP.setText("Vă rog să vă introduceți CNP-ul.");
             return;
         }
-        User u = new User(txtEmail.getText(), passPassword.getText(), txtFirstName.getText(), txtLastName.getText(), comboGender.getValue(), txtCNP.getText(), dateBirthday.getValue(), false, false, false, false, false, false);
+        User u = new User(txtEmail.getText(), passPassword.getText(), txtFirstName.getText(), txtLastName.getText(), comboGender.getValue(), txtCNP.getText(), dateBirthday.getValue());
+        u.setVotingStatus(false);
         if (!u.verifyLastName()) {
             lblLastName.setText("Numele trebuie să conțină doar litere.");
             return;
@@ -113,10 +114,15 @@ public class RegistrationController extends ParentController implements Initiali
         if (!u.verifyCNP(lblCNP)) {
             return;
         }
+        if (u.verifyDateOfBirth() != 0) {
+            lblBirthday.setText("Ziua de naștere introdusă nu coincide cu cea din CNP.");
+            return;
+        }
         CNP = u.getCNP();
         if (!isUserInDatabaseWithCNP(u.getMail(), u.getPassword(), u.getCNP())) {
             insertUserIntoDatabase(u.getFirstName(), u.getLastName(), u.getMail(), u.getPassword(), u.getGender(), u.getDateOfBirth(), u.getAge(), u.getCNP(), u.getCounty(),
-                    u.hasVotedPresidential(), u.hasVotedEuro(), u.hasVotedLocal(), u.hasVotedParliament(), u.hasVotedReferendum(), u.hasVotedReferendum2(), u.isAdmin());
+                    u.getPresidential(), u.getEuropeanParliament(), u.getLocal(), u.getFirstReferendum(),
+                    u.getSecondReferendum(), u.isAdmin(), u.getDeputiesParliament(), u.getSenateParliament());
             changeScene(event, "/electionType.fxml", "Alegeri");
         } else {
             showAlert(Alert.AlertType.INFORMATION, owner, "Înregistrare nereușită", "Acest cont este deja înregistrat.");

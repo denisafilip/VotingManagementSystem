@@ -81,7 +81,7 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-      <BarChart fx:id="barChartRef1" layoutX="2.0" layoutY="105.0" prefHeight="278.0" prefWidth="794.0">
+      <BarChart fx:id="barChartRef1" layoutX="2.0" layoutY="105.0" prefHeight="278.0" prefWidth="794.0" visible="false">
          <xAxis>
             <CategoryAxis side="BOTTOM" />
          </xAxis>
@@ -89,7 +89,7 @@
             <NumberAxis side="LEFT" />
          </yAxis>
       </BarChart>
-      <BarChart fx:id="barChartRef2" layoutX="2.0" layoutY="387.0" prefHeight="278.0" prefWidth="794.0">
+      <BarChart fx:id="barChartRef2" layoutX="2.0" layoutY="387.0" prefHeight="278.0" prefWidth="794.0" visible="false">
          <xAxis>
             <CategoryAxis side="BOTTOM" />
          </xAxis>
@@ -97,5 +97,27 @@
             <NumberAxis side="LEFT" />
          </yAxis>
       </BarChart>
+      <Label fx:id="lblVoteAttendance" layoutX="35.0" layoutY="67.0" prefHeight="27.0" prefWidth="478.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblVoteAttendance2" layoutX="381.0" layoutY="67.0" prefHeight="27.0" prefWidth="478.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblS" alignment="CENTER" layoutX="901.0" layoutY="2.0" prefHeight="60.0" prefWidth="90.0" text="S" textAlignment="CENTER" visible="false" wrapText="true">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblCD" alignment="CENTER" layoutX="1013.0" layoutY="2.0" prefHeight="60.0" prefWidth="90.0" text="CD" textAlignment="CENTER" visible="false" wrapText="true">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Line fx:id="line1" endX="100.0" layoutX="1002.0" layoutY="45.0" startX="-100.0" visible="false" />
+      <Line fx:id="line2" endX="-99.31793212890625" endY="420.79998779296875" layoutX="1101.0" layoutY="328.0" startX="-99.31793212890625" startY="-300.20001220703125" visible="false" />
    </children>
 </AnchorPane>

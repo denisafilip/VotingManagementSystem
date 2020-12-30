@@ -1,6 +1,6 @@
 package JavaFX.admin;
 
-import JavaFX.database.ParentController;
+import JavaFX.ParentController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -45,6 +45,6 @@ public class AdminMenuController extends ParentController {
     }
 
     public void goBackToElectionTypes(ActionEvent actionEvent) throws IOException {
-        changeScene(actionEvent, "/electionType.fxml", "Administrator");
+        changeScene(actionEvent, "/electionType.fxml", "Alegeri");
     }
 }
