@@ -29,8 +29,8 @@ public class LogInController extends ParentController {
             return;
         }
         User u = new User(txtEmail.getText(), passPassword.getText());
-        if (isUserInDatabaseForLogIn(u.getMail(), u.getPassword())) {
-            getUserCNP(u.getMail(), u.getPassword());
+        if (isUserInDatabaseForLogIn(u)) {
+            getUserCNP(u);
             changeScene(actionEvent, "/electionType.fxml", "Alegeri");
         } else {
             showAlert(Alert.AlertType.ERROR, owner, "Conectare nereușită", "Acest cont nu a fost înregistrat. Verificați credențialele de conectare sau apăsați pe butonul ”Înregistrare” pentru a vă crea un cont.");

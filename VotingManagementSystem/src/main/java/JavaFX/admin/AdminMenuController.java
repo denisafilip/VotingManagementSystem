@@ -1,6 +1,7 @@
 package JavaFX.admin;
 
 import JavaFX.ParentController;
+import election.enums.typeOfElection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,31 +16,31 @@ public class AdminMenuController extends ParentController {
     @FXML private Button btnBack;
 
     public void goToParliament(ActionEvent actionEvent) throws IOException {
-        buttonPressed = "ADMIN - STATISTICI VOT - Alegeri Parlamentare";
+        buttonPressed = getDeputiesParliamentElection().getType();
         changeScene(actionEvent, "/admin.fxml", "Administrator");
 
     }
 
     public void goToEuropeanParliament(ActionEvent actionEvent) throws IOException {
-        buttonPressed = "ADMIN - STATISTICI VOT - Alegeri Europarlamentare";
+        buttonPressed = getEuropeanParliamentElection().getType();
         changeScene(actionEvent, "/admin.fxml", "Administrator");
 
     }
 
     public void goToPresidential(ActionEvent actionEvent) throws IOException {
-        buttonPressed = "ADMIN - STATISTICI VOT - Alegeri Prezidențiale";
+        buttonPressed = getPresidentialElection().getType();
         changeScene(actionEvent, "/admin.fxml", "Administrator");
 
     }
 
     public void goToLocal(ActionEvent actionEvent) throws IOException {
-        buttonPressed = "ADMIN - STATISTICI VOT - Alegeri Locale";
+        buttonPressed = getLocalElection().getType();
         changeScene(actionEvent, "/admin.fxml", "Administrator");
 
     }
 
     public void goToReferendum(ActionEvent actionEvent) throws IOException {
-        buttonPressed = "ADMIN - STATISTICI VOT - Referendum";
+        buttonPressed = getFirstReferendum().getType();
         changeScene(actionEvent, "/admin.fxml", "Administrator");
 
     }

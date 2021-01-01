@@ -119,10 +119,8 @@ public class RegistrationController extends ParentController implements Initiali
             return;
         }
         CNP = u.getCNP();
-        if (!isUserInDatabaseWithCNP(u.getMail(), u.getPassword(), u.getCNP())) {
-            insertUserIntoDatabase(u.getFirstName(), u.getLastName(), u.getMail(), u.getPassword(), u.getGender(), u.getDateOfBirth(), u.getAge(), u.getCNP(), u.getCounty(),
-                    u.getPresidential(), u.getEuropeanParliament(), u.getLocal(), u.getFirstReferendum(),
-                    u.getSecondReferendum(), u.isAdmin(), u.getDeputiesParliament(), u.getSenateParliament());
+        if (!isUserInDatabaseWithCNP(u)) {
+            insertUserIntoDatabase(u);
             changeScene(event, "/electionType.fxml", "Alegeri");
         } else {
             showAlert(Alert.AlertType.INFORMATION, owner, "Înregistrare nereușită", "Acest cont este deja înregistrat.");

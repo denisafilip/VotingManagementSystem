@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.time.Year;
 
 public class ParentController extends database.DatabaseOperations {
-    public static String buttonPressed;
+    public static typeOfElection buttonPressed;
     private Referendum firstReferendum = new Referendum(typeOfElection.REFERENDUM_QUESTION_1, Question.QUESTION1, Year.of(2019));
     private Referendum secondReferendum = new Referendum(typeOfElection.REFERENDUM_QUESTION_2, Question.QUESTION2, Year.of(2019));
     private Election presidentialElection = new PresidentialElection(Year.of(2019), 5, numberOfRound.ONE);

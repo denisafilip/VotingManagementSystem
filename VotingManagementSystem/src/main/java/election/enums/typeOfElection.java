@@ -1,22 +1,28 @@
 package election.enums;
 
 public enum typeOfElection {
-    PRESIDENTIAL("Presidential"),
-    PARLIAMENT("Parliament"),
-    SENATE_PARLIAMENT("SenateParliament"),
-    CHAMBER_OF_DEPUTIES_PARLIAMENT("ChamberOfDeputiesParliament"),
-    LOCAL("Local"),
-    EUROPEAN_PARLIAMENT("EuropeanParliament"),
-    REFERENDUM_QUESTION_1("ReferendumQuestion1"),
-    REFERENDUM_QUESTION_2("ReferendumQuestion2");
+    PRESIDENTIAL("Presidential", "Alegeri Prezidențiale"),
+    PARLIAMENT("Parliament", "Alegeri Parlamentare"),
+    SENATE_PARLIAMENT("SenateParliament", "Alegeri Parlamentare - Senat"),
+    CHAMBER_OF_DEPUTIES_PARLIAMENT("ChamberOfDeputiesParliament", "Alegeri Parlamentare - Camera Deputaților"),
+    LOCAL("Local", "Alegeri Locale"),
+    EUROPEAN_PARLIAMENT("EuropeanParliament", "Alegeri Europarlamentare"),
+    REFERENDUM_QUESTION_1("ReferendumQuestion1", "Referendum - Prima Întrebare"),
+    REFERENDUM_QUESTION_2("ReferendumQuestion2", "Referendum - Prima Întrebare");
 
     private final String label;
+    private final String labelRomanian;
 
-    typeOfElection(String label) {
+    typeOfElection(String label, String labelRomanian) {
         this.label = label;
+        this.labelRomanian = labelRomanian;
     }
 
     public String getLabel() {
         return label;
+    }
+
+    public String getLabelRomanian() {
+        return labelRomanian;
     }
 }

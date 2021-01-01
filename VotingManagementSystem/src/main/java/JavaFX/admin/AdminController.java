@@ -4,6 +4,7 @@ import JavaFX.ParentController;
 import country.Country;
 import country.County;
 import election.Election;
+import election.enums.typeOfElection;
 import election.referendum.Referendum;
 import election.referendum.ReferendumPosition;
 import javafx.event.ActionEvent;
@@ -52,6 +53,7 @@ public class AdminController extends ParentController implements Initializable {
     @FXML private Label lblCD;
     @FXML private Line line1;
     @FXML private Line line2;
+    @FXML private Line lineAttendance;
 
     private final CategoryAxis xAxis = new CategoryAxis();
     private final NumberAxis yAxis = new NumberAxis();
@@ -68,11 +70,9 @@ public class AdminController extends ParentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        lblElection.setText(buttonPressed);
-
-        if (buttonPressed.equals("ADMIN - STATISTICI VOT - Referendum")) {
+        if (buttonPressed == getFirstReferendum().getType()) {
             displayVotesReferendum();
-        } else if (buttonPressed.equals("ADMIN - STATISTICI VOT - Alegeri Parlamentare")) {
+        } else if (buttonPressed == getDeputiesParliamentElection().getType()) {
             displayVotesForParliamentElection();
             displayVotesPoliticalPartiesParliament();
         } else {
@@ -86,22 +86,19 @@ public class AdminController extends ParentController implements Initializable {
     }
 
     public void displayVotesReferendum() {
+        lblElection.setText("STATISTICI - Referendum - " + getFirstReferendum().getYearOfElection());
         Scraping scraper = new Scraping();
         Country Romania = scraper.webScrapingCounties();
 
         barChartCounties.setVisible(false);
         barChartRef1.setVisible(true);
         barChartRef2.setVisible(true);
+        lineAttendance.setVisible(false);
 
         setUpBarChartForReferendum(Romania, barChartRef1, "Voturi pe Județe Întrebare 1 Referendum", getFirstReferendum());
         setUpBarChartForReferendum(Romania, barChartRef2, "Voturi pe Județe Întrebare 2 Referendum", getSecondReferendum());
 
         changeVisibilityOfImageViews();
-       /* double voteAttendanceReferendum1 = computeVoteAttendance("noOfYesReferendumVotes") + computeVoteAttendance("noOfNoReferendumVotes");
-        double voteAttendanceReferendum2 = computeVoteAttendance("noOfYesReferendum2Votes") + computeVoteAttendance("noOfNoReferendum2Votes");
-
-        lblVoteAttendance.setText("Prezență vot întrebare 1 - " + doubleFormat.format(voteAttendanceReferendum1) + "%");
-        lblVoteAttendance2.setText("Prezență vot întrebare 2 - " + doubleFormat.format(voteAttendanceReferendum2) + "%");*/
 
         for (County c : Romania.getCounties()) {
             getFirstReferendum().getReferendumVotes().increaseNumberOfVotes(getNoOfVotesCountyReferendum(getFirstReferendum(), c.getCountyName()));
@@ -166,6 +163,7 @@ public class AdminController extends ParentController implements Initializable {
     }
 
     public void displayVotesForParliamentElection() {
+        lblElection.setText("STATISTICI - " + typeOfElection.PARLIAMENT.getLabelRomanian() + getDeputiesParliamentElection().getYearOfElection());
         Scraping scraper = new Scraping();
         Country Romania = scraper.webScrapingCounties();
 
@@ -174,8 +172,8 @@ public class AdminController extends ParentController implements Initializable {
         barChartRef2.setVisible(false);
         barChartCounties.setTitle("Voturi pe Județe");
         Romania.sortCountiesAlphabetically(Romania);
-        lblVoteAttendance.setText("Prezență vot Senat - " + doubleFormat.format(computeVoteAttendance(getSenateParliamentElection())) + "%");
-        lblVoteAttendance2.setText("Prezență vot Camera Deputaților - " + doubleFormat.format(computeVoteAttendance(getDeputiesParliamentElection())) + "%");
+        lblVoteAttendance.setText("Prezență vot " + getSenateParliamentElection().getType().getLabelRomanian() + " - " + doubleFormat.format(computeVoteAttendance(getSenateParliamentElection())) + "%");
+        lblVoteAttendance2.setText("Prezență vot " + getDeputiesParliamentElection().getType().getLabelRomanian() + " - " + doubleFormat.format(computeVoteAttendance(getDeputiesParliamentElection())) + "%");
         getDataForBarChart(Romania, getSenateParliamentElection(), "Număr de voturi Senat");
         getDataForBarChart(Romania, getDeputiesParliamentElection(), "Număr de voturi Camera Deputaților");
     }
@@ -209,6 +207,7 @@ public class AdminController extends ParentController implements Initializable {
     public void displayVotesPoliticalParties() {
         int layoutY = START_LAYOUT_Y;
         Election typeOfElection = setTypeOfElection();
+        lblElection.setText("STATISTICI - " + typeOfElection.getType().getLabelRomanian() + " - " + typeOfElection.getYearOfElection());
         for (Map.Entry<String, PoliticalParty> entry : typeOfElection.getPoliticalParties().entrySet()) {
             PoliticalParty p = entry.getValue();
             createLabelForPoliticalParty(LAYOUT_X_FIRST_LABELS, layoutY, typeOfElection, p);
@@ -229,13 +228,13 @@ public class AdminController extends ParentController implements Initializable {
     private Election setTypeOfElection() {
         Election typeOfVote;
         switch (buttonPressed) {
-            case "ADMIN - STATISTICI VOT - Alegeri Europarlamentare":
+            case EUROPEAN_PARLIAMENT:
                 typeOfVote = getEuropeanParliamentElection();
                 break;
-            case "ADMIN - STATISTICI VOT - Alegeri Prezidențiale":
+            case PRESIDENTIAL:
                 typeOfVote = getPresidentialElection();
                 break;
-            case "ADMIN - STATISTICI VOT - Alegeri Locale":
+            case LOCAL:
                 typeOfVote = getLocalElection();
                 break;
             default:

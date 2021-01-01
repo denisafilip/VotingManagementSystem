@@ -15,6 +15,7 @@ public class Election {
     private durationOfMandate mandate;
     private Map<String, PoliticalParty> politicalParties;
     private double electoralThreshold;
+    private int noOfVotesPlaced;
 
     public Election() {
         addPoliticalParties();
@@ -77,5 +78,17 @@ public class Election {
 
     public void setType(typeOfElection type) {
         this.type = type;
+    }
+
+    public int getNoOfVotesPlaced() {
+        return noOfVotesPlaced;
+    }
+
+    public void setNoOfVotesPlaced(int noOfVotesPlaced) {
+        this.noOfVotesPlaced = noOfVotesPlaced;
+    }
+
+    public void increaseNoOfVotes(int noOfVotes) {
+        this.noOfVotesPlaced += noOfVotes;
     }
 }

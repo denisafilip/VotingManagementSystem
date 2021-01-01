@@ -272,7 +272,7 @@ public class User {
      * @return true if user's last name is formed only of letters, spaces or hyphens
      */
     public boolean verifyLastName() {
-        return (this.lastName.matches("[a-zA-Z- ]+"));
+        return (this.lastName.matches("[a-zA-Z- ăîâșț]+"));
     }
 
     /**
@@ -280,7 +280,7 @@ public class User {
      * @return true if user's first name is formed only of letters, spaces or hyphens
      */
     public boolean verifyFirstName() {
-        return (this.firstName.matches("[a-zA-Z- ]+"));
+        return (this.firstName.matches("[a-zA-Z- ăîâșț]+"));
     }
 
 
@@ -295,13 +295,9 @@ public class User {
         } else {
             birthYear = "19" + this.CNP.charAt(1) + this.CNP.charAt(2);
         }
-        System.out.println(birthYear);
         int birthMonth = (this.CNP.charAt(3) - '0')*10 + (this.CNP.charAt(4) - '0');
-        System.out.println(birthMonth);
         int birthDay = (this.CNP.charAt(5) - '0')*10 + (this.CNP.charAt(6) - '0');
-        System.out.println(birthDay);
         LocalDate userDOB = LocalDate.of(Integer.parseInt(birthYear), birthMonth, birthDay);
-        System.out.println(userDOB);
         return userDOB.compareTo(this.dateOfBirth);
     }
 

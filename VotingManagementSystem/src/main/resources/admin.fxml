@@ -97,12 +97,12 @@
             <NumberAxis side="LEFT" />
          </yAxis>
       </BarChart>
-      <Label fx:id="lblVoteAttendance" layoutX="35.0" layoutY="67.0" prefHeight="27.0" prefWidth="478.0">
+      <Label fx:id="lblVoteAttendance" layoutX="35.0" layoutY="67.0" prefHeight="27.0" prefWidth="701.0">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="lblVoteAttendance2" layoutX="381.0" layoutY="67.0" prefHeight="27.0" prefWidth="478.0">
+      <Label fx:id="lblVoteAttendance2" layoutX="35.0" layoutY="121.0" prefHeight="27.0" prefWidth="702.0">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -117,7 +117,8 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Line fx:id="line1" endX="100.0" layoutX="1002.0" layoutY="45.0" startX="-100.0" visible="false" />
+      <Line fx:id="lineAttendance" endX="605.6000366210938" endY="7.62939453125E-6" layoutX="136.0" layoutY="105.0" startX="-100.0" />
       <Line fx:id="line2" endX="-99.31793212890625" endY="420.79998779296875" layoutX="1101.0" layoutY="328.0" startX="-99.31793212890625" startY="-300.20001220703125" visible="false" />
+      <Line fx:id="line1" endX="100.0" layoutX="1012.0" layoutY="55.0" startX="-100.0" visible="false" />
    </children>
 </AnchorPane>

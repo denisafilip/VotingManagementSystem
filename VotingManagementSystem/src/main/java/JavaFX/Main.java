@@ -8,18 +8,16 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    Stage window;
+    /** Loading the registration scene, the first one of the application. */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        window = primaryStage;
         FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/registration.fxml"));
         Parent root = myLoader.load();
-        window.setTitle("Înregistrare");
+        primaryStage.setTitle("Înregistrare");
         Scene scene = new Scene(root);
-        window.setScene(scene);
-        window.show();
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);

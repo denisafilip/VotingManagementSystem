@@ -6,6 +6,7 @@ import election.enums.typeOfElection;
 import election.referendum.Referendum;
 import election.referendum.ReferendumPosition;
 import politicalParty.PoliticalParty;
+import user.User;
 import vote.ReferendumPairVote;
 import vote.ReferendumVote;
 
@@ -62,33 +63,16 @@ public class DatabaseOperations {
     }
 
     /**
-     *
-     * @param firstName - first name of User
-     * @param lastName - last name of User
-     * @param email - mail of User
-     * @param password - password of User
-     * @param gender - gender of User
-     * @param dateOfBirth - date of birth of User
-     * @param age - age of User
-     * @param CNP - CNP of User
-     * @param county - county of User
-     * @param hasVotedPresidential - false at this point, because the user only registered, it did not vote yet
-     * @param hasVotedEuro - false at this point, because the user only registered, it did not vote yet
-     * @param hasVotedLocal - false at this point, because the user only registered, it did not vote yet
-     * @param hasVotedReferendum - false at this point, because the user only registered, it did not vote yet
+     * @param u - the User which we want to insert into the database
      * inserts user's data into User table, from Microsoft SQL Server Database
      */
-    public void insertUserIntoDatabase(String firstName, String lastName, String email, String password, String gender, LocalDate dateOfBirth,
-                                       int age, String CNP, County county, Boolean hasVotedPresidential, Boolean hasVotedEuro,
-                                       Boolean hasVotedLocal, Boolean hasVotedReferendum, Boolean hasVotedReferendum2,
-                                       Boolean isAdmin, Boolean hasVotedDeputiesParliament, Boolean hasVotedSenateParliament) {
+    public void insertUserIntoDatabase(User u) {
         PreparedStatement preparedStatement = null;
         PreparedStatement selectFromCounty = null;
         ResultSet resultSet = null;
         try {
-
             selectFromCounty = conn.prepareStatement(SELECT_FROM_COUNTY);
-            selectFromCounty.setString(1, county.getCountyName());
+            selectFromCounty.setString(1, u.getCounty().getCountyName());
 
             resultSet = selectFromCounty.executeQuery();
             int idCounty = 0;
@@ -97,23 +81,23 @@ public class DatabaseOperations {
             }
 
             preparedStatement = conn.prepareStatement(INSERT_USER);
-            preparedStatement.setString(1, firstName);
-            preparedStatement.setString(2, lastName);
-            preparedStatement.setString(3, email);
-            preparedStatement.setString(4, password);
-            preparedStatement.setString(5, gender);
-            preparedStatement.setDate(6, Date.valueOf(dateOfBirth));
-            preparedStatement.setInt(7, age);
-            preparedStatement.setString(8, CNP);
+            preparedStatement.setString(1, u.getFirstName());
+            preparedStatement.setString(2, u.getLastName());
+            preparedStatement.setString(3, u.getMail());
+            preparedStatement.setString(4, u.getPassword());
+            preparedStatement.setString(5, u.getGender());
+            preparedStatement.setDate(6, Date.valueOf(u.getDateOfBirth()));
+            preparedStatement.setInt(7, u.getAge());
+            preparedStatement.setString(8, u.getCNP());
             preparedStatement.setInt(9, idCounty);
-            preparedStatement.setBoolean(10, hasVotedPresidential);
-            preparedStatement.setBoolean(11, hasVotedEuro);
-            preparedStatement.setBoolean(12, hasVotedLocal);
-            preparedStatement.setBoolean(13, hasVotedReferendum);
-            preparedStatement.setBoolean(14, hasVotedReferendum2);
-            preparedStatement.setBoolean(15, isAdmin);
-            preparedStatement.setBoolean(16, hasVotedSenateParliament);
-            preparedStatement.setBoolean(17, hasVotedDeputiesParliament);
+            preparedStatement.setBoolean(10, u.getPresidential());
+            preparedStatement.setBoolean(11, u.getEuropeanParliament());
+            preparedStatement.setBoolean(12, u.getLocal());
+            preparedStatement.setBoolean(13, u.getFirstReferendum());
+            preparedStatement.setBoolean(14, u.getSecondReferendum());
+            preparedStatement.setBoolean(15, u.isAdmin());
+            preparedStatement.setBoolean(16, u.getSenateParliament());
+            preparedStatement.setBoolean(17, u.getDeputiesParliament());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -125,21 +109,15 @@ public class DatabaseOperations {
         }
     }
 
-    /**
-     *
-     * @param email - user's email
-     * @param password - user's password
-     * @param CNP - user's CNP
-     * @return true if the user is already found in the database
-     */
-    public Boolean isUserInDatabaseWithCNP(String email, String password, String CNP) {
+    /** @return true if the user is already found in the database */
+    public Boolean isUserInDatabaseWithCNP(User u) {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = conn.prepareStatement(VALIDATE_USER);
-            preparedStatement.setString(1, email);
-            preparedStatement.setString(2, password);
-            preparedStatement.setString(3, CNP);
+            preparedStatement.setString(1, u.getMail());
+            preparedStatement.setString(2, u.getPassword());
+            preparedStatement.setString(3, u.getCNP());
 
             resultSet = preparedStatement.executeQuery();
             return resultSet.next();
@@ -156,13 +134,13 @@ public class DatabaseOperations {
      * Get user from database, based on email and password combination - used for log in.
      * @return true if the user is found in the database
      */
-    public Boolean isUserInDatabaseForLogIn(String email, String password) {
+    public Boolean isUserInDatabaseForLogIn(User u) {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = conn.prepareStatement(GET_USER_BY_MAIL_AND_PASSWORD);
-            preparedStatement.setString(1, email);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(1, u.getMail());
+            preparedStatement.setString(2, u.getPassword());
             resultSet = preparedStatement.executeQuery();
             return resultSet.next();
         } catch (SQLException e) {
@@ -174,16 +152,14 @@ public class DatabaseOperations {
         return false;
     }
 
-    /**
-     * Getting the CNP of the user, based on his email and password combination - for log in
-     */
-    public void getUserCNP(String email, String password) {
+    /** Getting the CNP of the user, based on his email and password combination - for log in */
+    public void getUserCNP(User u) {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = conn.prepareStatement(GET_USER_BY_MAIL_AND_PASSWORD);
-            preparedStatement.setString(1, email);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(1, u.getMail());
+            preparedStatement.setString(2, u.getPassword());
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 CNP = resultSet.getString("CNP");
