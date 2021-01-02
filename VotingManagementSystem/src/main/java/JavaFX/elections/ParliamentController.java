@@ -70,7 +70,7 @@ public class ParliamentController extends ParentController implements Initializa
     @FXML private ComboBox<String> comboSenatePRO;
 
 
-    private final String countyName = getUserCountyByName(CNP);
+    private final String countyName = database.getUserCountyByName(CNP);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -137,9 +137,7 @@ public class ParliamentController extends ParentController implements Initializa
 
 
     /** voting for Senate candidates */
-    public void voteUSRSenate() {
-        placeVote(imgVotedUSR, btnVoteUSRSenate, getSenateParliamentElection(), "USR PLUS", CNP);
-    }
+    public void voteUSRSenate() { placeVote(imgVotedUSR, btnVoteUSRSenate, getSenateParliamentElection(), "USR PLUS", CNP); }
 
     public void votePNLSenate() {
         placeVote(imgVotedPNL, btnVotePNLSenate, getSenateParliamentElection(), "PNL", CNP);
@@ -149,17 +147,13 @@ public class ParliamentController extends ParentController implements Initializa
         placeVote(imgVotedPSD, btnVotePSDSenate, getSenateParliamentElection(), "PSD", CNP);
     }
 
-    public void voteUDMRSenate() {
-        placeVote(imgVotedUDMR, btnVoteUDMRSenate, getSenateParliamentElection(), "UDMR", CNP);
-    }
+    public void voteUDMRSenate() { placeVote(imgVotedUDMR, btnVoteUDMRSenate, getSenateParliamentElection(), "UDMR", CNP); }
 
     public void votePMPSenate() {
         placeVote(imgVotedPMP, btnVotePMPSenate, getSenateParliamentElection(), "PMP", CNP);
     }
 
-    public void votePROSenate() {
-        placeVote(imgVotedPRO, btnVotePROSenate, getSenateParliamentElection(), "PRO România", CNP);
-    }
+    public void votePROSenate() { placeVote(imgVotedPRO, btnVotePROSenate, getSenateParliamentElection(), "PRO România", CNP);}
 
 
 

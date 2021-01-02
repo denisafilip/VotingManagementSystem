@@ -55,7 +55,7 @@ public class ElectionTypeController extends ParentController implements Initiali
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Boolean isUserAdmin = checkIfUserIsAdmin(CNP);
+        Boolean isUserAdmin = database.checkIfUserIsAdmin(CNP);
         if (!isUserAdmin) {
             btnAdmin.setVisible(false);
             btnAdmin.setDisable(true);

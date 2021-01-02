@@ -101,8 +101,8 @@ public class AdminController extends ParentController implements Initializable {
         changeVisibilityOfImageViews();
 
         for (County c : Romania.getCounties()) {
-            getFirstReferendum().getReferendumVotes().increaseNumberOfVotes(getNoOfVotesCountyReferendum(getFirstReferendum(), c.getCountyName()));
-            getSecondReferendum().getReferendumVotes().increaseNumberOfVotes(getNoOfVotesCountyReferendum(getSecondReferendum(), c.getCountyName()));
+            getFirstReferendum().getReferendumVotes().increaseNumberOfVotes(database.getNoOfVotesCountyReferendum(getFirstReferendum(), c.getCountyName()));
+            getSecondReferendum().getReferendumVotes().increaseNumberOfVotes(database.getNoOfVotesCountyReferendum(getSecondReferendum(), c.getCountyName()));
         }
         final int layoutX = 815;
         int layoutY = 228;
@@ -142,7 +142,7 @@ public class AdminController extends ParentController implements Initializable {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Număr de voturi");
         for (County c : Romania.getCounties()) {
-            ReferendumPairVote referendumPairVote = getNoOfVotesCountyReferendum(referendum, c.getCountyName());
+            ReferendumPairVote referendumPairVote = database.getNoOfVotesCountyReferendum(referendum, c.getCountyName());
             series.getData().add(new XYChart.Data<>(c.getCountyName(), referendumPairVote.getTotalVotesReferendum()));
         }
         barChart.getData().add(series);
@@ -158,7 +158,7 @@ public class AdminController extends ParentController implements Initializable {
         barChartCounties.setTitle("Voturi pe Județe");
         Romania.sortCountiesAlphabetically(Romania);
         Election typeOfVote = setTypeOfElection();
-        lblVoteAttendance.setText("Prezență vot - " + doubleFormat.format(computeVoteAttendance(typeOfVote)) + "%");
+        lblVoteAttendance.setText("Prezență vot - " + doubleFormat.format(database.computeVoteAttendance(typeOfVote)) + "%");
         getDataForBarChart(Romania, typeOfVote, "Număr de voturi");
     }
 
@@ -172,8 +172,8 @@ public class AdminController extends ParentController implements Initializable {
         barChartRef2.setVisible(false);
         barChartCounties.setTitle("Voturi pe Județe");
         Romania.sortCountiesAlphabetically(Romania);
-        lblVoteAttendance.setText("Prezență vot " + getSenateParliamentElection().getType().getLabelRomanian() + " - " + doubleFormat.format(computeVoteAttendance(getSenateParliamentElection())) + "%");
-        lblVoteAttendance2.setText("Prezență vot " + getDeputiesParliamentElection().getType().getLabelRomanian() + " - " + doubleFormat.format(computeVoteAttendance(getDeputiesParliamentElection())) + "%");
+        lblVoteAttendance.setText("Prezență vot " + getSenateParliamentElection().getType().getLabelRomanian() + " - " + doubleFormat.format(database.computeVoteAttendance(getSenateParliamentElection())) + "%");
+        lblVoteAttendance2.setText("Prezență vot " + getDeputiesParliamentElection().getType().getLabelRomanian() + " - " + doubleFormat.format(database.computeVoteAttendance(getDeputiesParliamentElection())) + "%");
         getDataForBarChart(Romania, getSenateParliamentElection(), "Număr de voturi Senat");
         getDataForBarChart(Romania, getDeputiesParliamentElection(), "Număr de voturi Camera Deputaților");
     }
@@ -182,7 +182,7 @@ public class AdminController extends ParentController implements Initializable {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName(titleOfSeries);
         for (County c : country.getCounties()) {
-            int noOfVotes = getNoOfVotesCounty(typeOfVote, c.getCountyName());
+            int noOfVotes = database.getNoOfVotesCounty(typeOfVote, c.getCountyName());
             series.getData().add(new XYChart.Data<>(c.getCountyName(), noOfVotes));
         }
         barChartCounties.getData().add(series);
@@ -216,7 +216,7 @@ public class AdminController extends ParentController implements Initializable {
     }
 
     public void createLabelForPoliticalParty(int layoutX, int layoutY, Election election, PoliticalParty p) {
-        int noOfVotes = getNoOfVotesPoliticalParty(election, p.getAbbreviation());
+        int noOfVotes = database.getNoOfVotesPoliticalParty(election, p.getAbbreviation());
         Label lbl = new Label();
         lbl.setText("voturi: " + noOfVotes);
         lbl.setLayoutX(layoutX);

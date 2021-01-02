@@ -58,7 +58,7 @@ public class LocalController extends ParentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String countyName = getUserCountyByName(CNP);
+        String countyName = database.getUserCountyByName(CNP);
         lblElection.setText("ALEGERI LOCALE - " + countyName + " - " + getLocalElection().getYearOfElection());
     }
 }

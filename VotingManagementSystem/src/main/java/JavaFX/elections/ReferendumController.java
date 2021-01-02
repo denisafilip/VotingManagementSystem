@@ -60,9 +60,9 @@ public class ReferendumController extends ParentController implements Initializa
 
     public void placeVoteReferendum(ImageView img, Button button, Election election, String label) {
         Window owner = button.getScene().getWindow();
-        if (!hasUserVoted(CNP, election)) {
-            incrementVotesForCountyReferendum(election, CNP, label);
-            updateUserVotingStatus(election, CNP);
+        if (!database.hasUserVoted(CNP, election)) {
+            database.incrementVotesForCountyReferendum(election, CNP, label);
+            database.updateUserVotingStatus(election, CNP);
             img.setVisible(true);
         } else {
             showAlert(Alert.AlertType.ERROR, owner,"Vot nereușit!", "Puteți să votați o singură dată în cadrul unui referendum.");

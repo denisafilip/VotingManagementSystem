@@ -1,5 +1,6 @@
 package JavaFX;
 
+import database.DatabaseOperations;
 import election.*;
 import election.enums.Question;
 import election.enums.numberOfRound;
@@ -19,7 +20,7 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.time.Year;
 
-public class ParentController extends database.DatabaseOperations {
+public class ParentController {
     public static typeOfElection buttonPressed;
     private Referendum firstReferendum = new Referendum(typeOfElection.REFERENDUM_QUESTION_1, Question.QUESTION1, Year.of(2019));
     private Referendum secondReferendum = new Referendum(typeOfElection.REFERENDUM_QUESTION_2, Question.QUESTION2, Year.of(2019));
@@ -28,6 +29,8 @@ public class ParentController extends database.DatabaseOperations {
     private Election europeanParliamentElection = new EuropeanParliamentElection(Year.of(2019), 5);
     private Election senateParliamentElection = new ParliamentElection(typeOfElection.SENATE_PARLIAMENT, Year.of(2020), 5);
     private Election deputiesParliamentElection = new ParliamentElection(typeOfElection.CHAMBER_OF_DEPUTIES_PARLIAMENT, Year.of(2020), 5);
+    public static String CNP;
+    public final DatabaseOperations database = new DatabaseOperations();
 
     /**
      * Function that changes from a scene to another, specified through the fxmlFilePath parameter
@@ -63,10 +66,10 @@ public class ParentController extends database.DatabaseOperations {
      * election, increasing the number of votes in the county in which the user lives; setting the voting status of the user to true     */
     public void placeVote(ImageView img, Button button, Election election, String politicalPartyAbbr, String CNP) {
         Window owner = button.getScene().getWindow();
-        if (!hasUserVoted(CNP, election)) {
-            incrementVotesForParty(election, election.getPoliticalParties().get(politicalPartyAbbr));
-            incrementVotesForCounty(election, CNP);
-            updateUserVotingStatus(election, CNP);
+        if (!database.hasUserVoted(CNP, election)) {
+            database.incrementVotesForParty(election, election.getPoliticalParties().get(politicalPartyAbbr));
+            database.incrementVotesForCounty(election, CNP);
+            database.updateUserVotingStatus(election, CNP);
             img.setVisible(true);
         } else {
             showAlert(Alert.AlertType.ERROR, owner,"Vot nereușit!", "Puteți să votați o singură dată în cadrul unor alegeri.");

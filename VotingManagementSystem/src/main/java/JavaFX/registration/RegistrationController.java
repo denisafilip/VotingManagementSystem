@@ -119,8 +119,8 @@ public class RegistrationController extends ParentController implements Initiali
             return;
         }
         CNP = u.getCNP();
-        if (!isUserInDatabaseWithCNP(u)) {
-            insertUserIntoDatabase(u);
+        if (!database.isUserInDatabaseWithCNP(u)) {
+            database.insertUserIntoDatabase(u);
             changeScene(event, "/electionType.fxml", "Alegeri");
         } else {
             showAlert(Alert.AlertType.INFORMATION, owner, "Înregistrare nereușită", "Acest cont este deja înregistrat.");

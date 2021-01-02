@@ -1,8 +1,6 @@
 package database;
 
-import country.County;
 import election.Election;
-import election.enums.typeOfElection;
 import election.referendum.Referendum;
 import election.referendum.ReferendumPosition;
 import politicalParty.PoliticalParty;
@@ -11,26 +9,24 @@ import vote.ReferendumPairVote;
 import vote.ReferendumVote;
 
 import java.sql.*;
-import java.time.LocalDate;
 
 public class DatabaseOperations {
 
     /** Queries for database, used in prepared statements */
     private static final String INSERT_USER = "INSERT INTO [dbo].[User] VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String SELECT_FROM_COUNTY = "SELECT id FROM [dbo].[County] WHERE name = ?";
-    private static final String VALIDATE_USER = "SELECT * from [dbo].[User] WHERE mail = ? and password = ? or CNP = ?";
-    private static final String FIND_USER_FROM_CNP = "SELECT * from [dbo].[User] WHERE CNP = ?";
-    private static final String FIND_USER_COUNTY = "SELECT idCounty, name from [dbo].[User] INNER JOIN [dbo].[County] ON [User].idCounty = County.id WHERE CNP = ?";
-    private static final String IS_USER_AN_ADMIN = "SELECT isAdmin from [dbo].[User] WHERE CNP = ?";
+    private static final String GET_COUNTY_ID = "SELECT id FROM [dbo].[County] WHERE name = ?";
+    private static final String CHECK_IF_USER_IN_DATABASE = "SELECT * from [dbo].[User] WHERE mail = ? and password = ? or CNP = ?";
+    private static final String GET_USER_BY_CNP = "SELECT * from [dbo].[User] WHERE CNP = ?";
+    private static final String GET_USER_COUNTY = "SELECT idCounty, name from [dbo].[User] INNER JOIN [dbo].[County] ON [User].idCounty = County.id WHERE CNP = ?";
+    private static final String GET_USER_ADMIN_STATUS = "SELECT isAdmin from [dbo].[User] WHERE CNP = ?";
     private static final String MAKE_USER_AN_ADMIN = "UPDATE [dbo].[User] SET isAdmin = 'true' WHERE mail = ?";
     private static final String GET_USER_BY_MAIL_AND_PASSWORD = "SELECT * from [dbo].[User] WHERE mail = ? and password = ?";
+
 
     private static final double NO_OF_VOTERS_IN_ROMANIA = 18191396;
 
     /** Realizes the connection to the database only once for the entire project */
     static Connection conn = DatabaseConnection.getConnection();
-
-    public static String CNP;
 
     public void closePreparedStatement(PreparedStatement preparedStatement) {
         try {
@@ -71,7 +67,7 @@ public class DatabaseOperations {
         PreparedStatement selectFromCounty = null;
         ResultSet resultSet = null;
         try {
-            selectFromCounty = conn.prepareStatement(SELECT_FROM_COUNTY);
+            selectFromCounty = conn.prepareStatement(GET_COUNTY_ID);
             selectFromCounty.setString(1, u.getCounty().getCountyName());
 
             resultSet = selectFromCounty.executeQuery();
@@ -114,7 +110,7 @@ public class DatabaseOperations {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = conn.prepareStatement(VALIDATE_USER);
+            preparedStatement = conn.prepareStatement(CHECK_IF_USER_IN_DATABASE);
             preparedStatement.setString(1, u.getMail());
             preparedStatement.setString(2, u.getPassword());
             preparedStatement.setString(3, u.getCNP());
@@ -153,7 +149,7 @@ public class DatabaseOperations {
     }
 
     /** Getting the CNP of the user, based on his email and password combination - for log in */
-    public void getUserCNP(User u) {
+    public String getUserCNP(User u) {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -161,15 +157,18 @@ public class DatabaseOperations {
             preparedStatement.setString(1, u.getMail());
             preparedStatement.setString(2, u.getPassword());
             resultSet = preparedStatement.executeQuery();
+            String cnp = null;
             while (resultSet.next()) {
-                CNP = resultSet.getString("CNP");
+                cnp = resultSet.getString("CNP");
             }
+            return cnp;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             closeResultSet(resultSet);
             closePreparedStatement(preparedStatement);
         }
+        return null;
     }
 
     /**
@@ -181,7 +180,7 @@ public class DatabaseOperations {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = conn.prepareStatement(FIND_USER_FROM_CNP);
+            preparedStatement = conn.prepareStatement(GET_USER_BY_CNP);
             preparedStatement.setString(1, CNP);
 
             resultSet = preparedStatement.executeQuery();
@@ -238,7 +237,7 @@ public class DatabaseOperations {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = conn.prepareStatement(FIND_USER_COUNTY);
+            preparedStatement = conn.prepareStatement(GET_USER_COUNTY);
             preparedStatement.setString(1, CNP);
             resultSet = preparedStatement.executeQuery();
             int idCounty = 0;
@@ -260,7 +259,7 @@ public class DatabaseOperations {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = conn.prepareStatement(FIND_USER_COUNTY);
+            preparedStatement = conn.prepareStatement(GET_USER_COUNTY);
             preparedStatement.setString(1, CNP);
             resultSet = preparedStatement.executeQuery();
             String countyName = null;
@@ -270,6 +269,9 @@ public class DatabaseOperations {
             return countyName;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closePreparedStatement(preparedStatement);
+            closeResultSet(resultSet);
         }
         return null;
     }
@@ -396,7 +398,7 @@ public class DatabaseOperations {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = conn.prepareStatement(IS_USER_AN_ADMIN);
+            preparedStatement = conn.prepareStatement(GET_USER_ADMIN_STATUS);
             preparedStatement.setString(1, CNP);
             resultSet = preparedStatement.executeQuery();
 
@@ -414,18 +416,7 @@ public class DatabaseOperations {
         return false;
     }
 
-    public void grantAdminPermissions(String email) {
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = conn.prepareStatement(MAKE_USER_AN_ADMIN);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closePreparedStatement(preparedStatement);
-        }
-    }
-
+    /** @return a double value, which represents the attendance at a specific election, with respect to the total number of eligible voters from Romania */
     public double computeVoteAttendance(Election election) {
         Statement statement = null;
         ResultSet resultSet = null;
@@ -445,5 +436,17 @@ public class DatabaseOperations {
             closeStatement(statement);
         }
         return 0.0;
+    }
+
+    public void grantAdminPermissions(String email) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(MAKE_USER_AN_ADMIN);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closePreparedStatement(preparedStatement);
+        }
     }
 }
