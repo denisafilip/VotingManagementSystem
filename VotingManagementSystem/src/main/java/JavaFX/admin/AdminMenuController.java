@@ -1,7 +1,6 @@
 package JavaFX.admin;
 
 import JavaFX.ParentController;
-import election.enums.typeOfElection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +8,7 @@ import javafx.scene.control.Button;
 import java.io.IOException;
 
 public class AdminMenuController extends ParentController {
+    @FXML private Button btnReferendum;
     @FXML private Button btnEuro;
     @FXML private Button btnLocal;
     @FXML private Button btnPresidential;

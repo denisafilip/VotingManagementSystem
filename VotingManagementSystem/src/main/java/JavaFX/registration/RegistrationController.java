@@ -2,21 +2,15 @@ package JavaFX.registration;
 
 
 import JavaFX.ParentController;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Window;
 import user.User;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class RegistrationController extends ParentController implements Initializable {
-
+public class RegistrationController extends ParentController {
 
     @FXML private Label lblFirstName;
     @FXML private Label lblLastName;
@@ -24,7 +18,6 @@ public class RegistrationController extends ParentController implements Initiali
     @FXML private Label lblPassword;
     @FXML private Label lblConfirmPassword;
     @FXML private Label lblBirthday;
-    @FXML private Label lblGender;
     @FXML private Label lblCNP;
 
     @FXML
@@ -32,9 +25,6 @@ public class RegistrationController extends ParentController implements Initiali
     @FXML private Button btnLogIn;
     @FXML
     private DatePicker dateBirthday;
-    private final ObservableList<String> options = FXCollections.observableArrayList("F", "M");
-    @FXML
-    private ComboBox<String> comboGender;
     @FXML
     private TextField txtCNP;
     @FXML
@@ -47,11 +37,6 @@ public class RegistrationController extends ParentController implements Initiali
     private TextField txtFirstName;
     @FXML
     private TextField txtLastName;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        comboGender.setItems(options);
-    }
 
     public void setOnAction(ActionEvent event) throws IOException {
         Window owner = btnVote.getScene().getWindow();
@@ -89,15 +74,11 @@ public class RegistrationController extends ParentController implements Initiali
             lblBirthday.setText("Vă rog să vă introduceți ziua de naștere.");
             return;
         }
-        if (comboGender.getSelectionModel().getSelectedItem() == null) {
-            lblGender.setText("Vă rog să vă alegeți genul.");
-            return;
-        }
         if (txtCNP.getText().isEmpty()) {
             lblCNP.setText("Vă rog să vă introduceți CNP-ul.");
             return;
         }
-        User u = new User(txtEmail.getText(), passPassword.getText(), txtFirstName.getText(), txtLastName.getText(), comboGender.getValue(), txtCNP.getText(), dateBirthday.getValue());
+        User u = new User(txtEmail.getText(), passPassword.getText(), txtFirstName.getText(), txtLastName.getText(), txtCNP.getText(), dateBirthday.getValue());
         u.setVotingStatus(false);
         if (!u.verifyLastName()) {
             lblLastName.setText("Numele trebuie să conțină doar litere.");
@@ -141,7 +122,6 @@ public class RegistrationController extends ParentController implements Initiali
         lblPassword.setText("");
         lblConfirmPassword.setText("");
         lblBirthday.setText("");
-        lblGender.setText("");
         lblCNP.setText("");
     }
 }

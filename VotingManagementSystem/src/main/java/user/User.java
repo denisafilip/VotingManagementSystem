@@ -44,18 +44,21 @@ public class User {
         this.password = password;
     }
 
-    public User(String mail, String password, String firstName, String lastName, String gender, String CNP, LocalDate dateOfBirth) {
+    public User(String mail, String password, String firstName, String lastName, String CNP, LocalDate dateOfBirth) {
         this.mail = mail;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.gender = gender;
         this.CNP = CNP;
         this.dateOfBirth = dateOfBirth;
         this.age = computeUserAge();
-        if (verifyCNP(null)) this.county = assignUserToCounty();
+        if (verifyCNP(null)) {
+            this.county = assignUserToCounty();
+            determineGender();
+        }
         initializeVotes(false);
         this.isAdmin = this.mail.equals(ADMIN_EMAIL);
+
     }
 
     public void setVotingStatus(boolean status) {
@@ -208,11 +211,10 @@ public class User {
         int rest = sum % 11;
         int controlDigit = Character.getNumericValue(this.CNP.charAt(12));
         if ((rest < 10 && rest == controlDigit) || (rest == 10 && controlDigit == 1)) {
-            if ((this.gender.equals("F") && (this.CNP.charAt(0) == '6' || this.CNP.charAt(0) == '2')) ||
-                    (this.gender.equals("M") && (this.CNP.charAt(0) == '5' || this.CNP.charAt(0) == '1'))) {
+            if (this.CNP.charAt(0) == '6' || this.CNP.charAt(0) == '2' || this.CNP.charAt(0) == '5' || this.CNP.charAt(0) == '1') {
                 return true;
             } else {
-                if (lblCNP != null) lblCNP.setText("Prima cifră a CNP-ului introdus nu se potrivește cu genul dvs.");
+                if (lblCNP != null) lblCNP.setText("Prima cifră a CNP-ului introdus nu este validă.");
                 return false;
             }
         } else {
@@ -299,6 +301,17 @@ public class User {
         int birthDay = (this.CNP.charAt(5) - '0')*10 + (this.CNP.charAt(6) - '0');
         LocalDate userDOB = LocalDate.of(Integer.parseInt(birthYear), birthMonth, birthDay);
         return userDOB.compareTo(this.dateOfBirth);
+    }
+
+    /**
+     * Assigns the user's gender, based on the first digit of the CNP
+     */
+    public void determineGender() {
+        if (this.CNP.charAt(0) == '6' || this.CNP.charAt(0) == '2') {
+            this.gender = "F";
+        } else if (this.CNP.charAt(0) == '1' || this.CNP.charAt(0) == '5') {
+            this.gender = "M";
+        }
     }
 
 

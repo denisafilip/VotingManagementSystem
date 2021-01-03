@@ -11,8 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -55,11 +53,9 @@ public class AdminController extends ParentController implements Initializable {
     @FXML private Line line2;
     @FXML private Line lineAttendance;
 
-    private final CategoryAxis xAxis = new CategoryAxis();
-    private final NumberAxis yAxis = new NumberAxis();
-    @FXML private final BarChart<String, Number> barChartCounties = new BarChart<>(xAxis, yAxis);
-    @FXML private final BarChart<String, Number> barChartRef1 = new BarChart<>(xAxis, yAxis);
-    @FXML private final BarChart<String, Number> barChartRef2 = new BarChart<>(xAxis, yAxis);
+    @FXML private BarChart<String, Number> barChartCounties;
+    @FXML private BarChart<String, Number> barChartRef1;
+    @FXML private BarChart<String, Number> barChartRef2;
 
     private final DecimalFormat doubleFormat = new DecimalFormat("#.000000000");
     private final int DISTANCE_BETWEEN_LABELS = 80;
