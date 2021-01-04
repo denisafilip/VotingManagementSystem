@@ -1,6 +1,6 @@
 package election.enums;
 
-public enum typeOfElection {
+public enum ElectionType {
     PRESIDENTIAL("Presidential", "Alegeri Prezidențiale"),
     PARLIAMENT("Parliament", "Alegeri Parlamentare"),
     SENATE_PARLIAMENT("SenateParliament", "Alegeri Parlamentare - Senat"),
@@ -13,7 +13,7 @@ public enum typeOfElection {
     private final String label;
     private final String labelRomanian;
 
-    typeOfElection(String label, String labelRomanian) {
+    ElectionType(String label, String labelRomanian) {
         this.label = label;
         this.labelRomanian = labelRomanian;
     }

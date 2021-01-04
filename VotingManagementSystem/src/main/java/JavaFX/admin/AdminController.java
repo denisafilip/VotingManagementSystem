@@ -4,7 +4,7 @@ import JavaFX.ParentController;
 import country.Country;
 import country.County;
 import election.Election;
-import election.enums.typeOfElection;
+import election.enums.ElectionType;
 import election.referendum.Referendum;
 import election.referendum.ReferendumPosition;
 import javafx.event.ActionEvent;
@@ -159,7 +159,7 @@ public class AdminController extends ParentController implements Initializable {
     }
 
     public void displayVotesForParliamentElection() {
-        lblElection.setText("STATISTICI - " + typeOfElection.PARLIAMENT.getLabelRomanian() + getDeputiesParliamentElection().getYearOfElection());
+        lblElection.setText("STATISTICI - " + ElectionType.PARLIAMENT.getLabelRomanian() + getDeputiesParliamentElection().getYearOfElection());
         Scraping scraper = new Scraping();
         Country Romania = scraper.webScrapingCounties();
 

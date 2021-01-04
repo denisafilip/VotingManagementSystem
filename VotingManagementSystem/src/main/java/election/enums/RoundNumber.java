@@ -1,6 +1,6 @@
 package election.enums;
 
-public enum numberOfRound {
+public enum RoundNumber {
     ONE,
     TWO
 }

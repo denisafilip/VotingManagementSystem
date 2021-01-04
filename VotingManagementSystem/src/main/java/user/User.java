@@ -2,7 +2,7 @@ package user;
 
 import country.Country;
 import country.County;
-import election.enums.typeOfElection;
+import election.enums.ElectionType;
 import javafx.scene.control.Label;
 import vote.UserVote;
 import webScraping.Scraping;
@@ -72,13 +72,13 @@ public class User {
     }
 
     public void initializeVotes(boolean status) {
-        this.europeanParliament = new UserVote(typeOfElection.EUROPEAN_PARLIAMENT, status);
-        this.senateParliament = new UserVote(typeOfElection.SENATE_PARLIAMENT, status);
-        this.deputiesParliament = new UserVote(typeOfElection.CHAMBER_OF_DEPUTIES_PARLIAMENT, status);
-        this.local = new UserVote(typeOfElection.LOCAL, status);
-        this.presidential = new UserVote(typeOfElection.PRESIDENTIAL, status);
-        this.firstReferendum = new UserVote(typeOfElection.REFERENDUM_QUESTION_1, status);
-        this.secondReferendum = new UserVote(typeOfElection.REFERENDUM_QUESTION_2, status);
+        this.europeanParliament = new UserVote(ElectionType.EUROPEAN_PARLIAMENT, status);
+        this.senateParliament = new UserVote(ElectionType.SENATE_PARLIAMENT, status);
+        this.deputiesParliament = new UserVote(ElectionType.CHAMBER_OF_DEPUTIES_PARLIAMENT, status);
+        this.local = new UserVote(ElectionType.LOCAL, status);
+        this.presidential = new UserVote(ElectionType.PRESIDENTIAL, status);
+        this.firstReferendum = new UserVote(ElectionType.REFERENDUM_QUESTION_1, status);
+        this.secondReferendum = new UserVote(ElectionType.REFERENDUM_QUESTION_2, status);
     }
 
     public String getFirstName() {

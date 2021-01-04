@@ -1,8 +1,8 @@
 package election;
 
 import country.Country;
-import election.enums.durationOfMandate;
-import election.enums.typeOfElection;
+import election.enums.MandateDuration;
+import election.enums.ElectionType;
 import user.Candidate;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -14,8 +14,8 @@ public class ParliamentElection extends Election {
     private List<Candidate> chamberOfDeputies;
     private List<Candidate> senate;
 
-    public ParliamentElection(typeOfElection type, Year yearOfElection, double electoralThreshold) {
-        super(type, yearOfElection, durationOfMandate.FOUR_YEARS, electoralThreshold);
+    public ParliamentElection(ElectionType type, Year yearOfElection, double electoralThreshold) {
+        super(type, yearOfElection, MandateDuration.FOUR_YEARS, electoralThreshold);
     }
 
     public List<Candidate> getChamberOfDeputies() {

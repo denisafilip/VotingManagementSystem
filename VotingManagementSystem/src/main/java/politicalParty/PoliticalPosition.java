@@ -1,6 +1,6 @@
 package politicalParty;
 
-public enum politicalPosition {
+public enum PoliticalPosition {
     EXTREME_LEFT,
     LEFT,
     CENTER_LEFT,

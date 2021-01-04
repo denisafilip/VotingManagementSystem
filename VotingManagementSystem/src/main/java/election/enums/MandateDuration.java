@@ -1,6 +1,6 @@
 package election.enums;
 
-public enum durationOfMandate {
+public enum MandateDuration {
     FOUR_YEARS,
     FIVE_YEARS
 }

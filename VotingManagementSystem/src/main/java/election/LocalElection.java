@@ -1,7 +1,7 @@
 package election;
 
-import election.enums.durationOfMandate;
-import election.enums.typeOfElection;
+import election.enums.MandateDuration;
+import election.enums.ElectionType;
 import user.Candidate;
 
 import java.time.Year;
@@ -14,7 +14,7 @@ public class LocalElection extends Election {
     List<Candidate> presidentCountyCouncil;
 
     public LocalElection(Year yearOfElection, double electoralThreshold) {
-        super(typeOfElection.LOCAL, yearOfElection, durationOfMandate.FOUR_YEARS, electoralThreshold);
+        super(ElectionType.LOCAL, yearOfElection, MandateDuration.FOUR_YEARS, electoralThreshold);
     }
 
     public List<Candidate> getCityCouncil() {

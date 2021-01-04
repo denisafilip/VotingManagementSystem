@@ -3,9 +3,9 @@ package politicalParty;
 public class PoliticalParty {
     private String name;
     private String abbreviation;
-    private politicalPosition politicalPosition; //position of the political party in the political spectrum
+    private PoliticalPosition politicalPosition; //position of the political party in the political spectrum
 
-    public PoliticalParty(String name, String abbreviation, politicalPosition politicalPosition) {
+    public PoliticalParty(String name, String abbreviation, PoliticalPosition politicalPosition) {
         this.name = name;
         this.abbreviation = abbreviation;
         this.politicalPosition = politicalPosition;
@@ -27,11 +27,11 @@ public class PoliticalParty {
         this.abbreviation = abbreviation;
     }
 
-    public politicalPosition getPoliticalPosition() {
+    public PoliticalPosition getPoliticalPosition() {
         return politicalPosition;
     }
 
-    public void setPoliticalPosition(politicalPosition politicalPosition) {
+    public void setPoliticalPosition(PoliticalPosition politicalPosition) {
         this.politicalPosition = politicalPosition;
     }
 

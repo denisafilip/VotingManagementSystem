@@ -1,19 +1,19 @@
 package vote;
 
-import election.enums.typeOfElection;
+import election.enums.ElectionType;
 
 public class Vote {
-    private typeOfElection type;
+    private ElectionType type;
 
-    public Vote(typeOfElection type) {
+    public Vote(ElectionType type) {
         this.type = type;
     }
 
-    public typeOfElection getType() {
+    public ElectionType getType() {
         return type;
     }
 
-    public void setType(typeOfElection type) {
+    public void setType(ElectionType type) {
         this.type = type;
     }
 }

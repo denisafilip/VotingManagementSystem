@@ -1,18 +1,18 @@
 package election;
 
-import election.enums.durationOfMandate;
-import election.enums.typeOfElection;
+import election.enums.MandateDuration;
+import election.enums.ElectionType;
 import politicalParty.PoliticalParty;
-import politicalParty.politicalPosition;
+import politicalParty.PoliticalPosition;
 
 import java.time.Year;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Election {
-    private typeOfElection type;
+    private ElectionType type;
     private Year yearOfElection;
-    private durationOfMandate mandate;
+    private MandateDuration mandate;
     private Map<String, PoliticalParty> politicalParties;
     private double electoralThreshold;
     private int noOfVotesPlaced;
@@ -21,12 +21,12 @@ public class Election {
         addPoliticalParties();
     }
 
-    public Election(typeOfElection type, Year yearOfElection) {
+    public Election(ElectionType type, Year yearOfElection) {
         this.type = type;
         this.yearOfElection = yearOfElection;
     }
 
-    public Election(typeOfElection type, Year yearOfElection, durationOfMandate mandate, double electoralThreshold) {
+    public Election(ElectionType type, Year yearOfElection, MandateDuration mandate, double electoralThreshold) {
         this.type = type;
         this.yearOfElection = yearOfElection;
         this.mandate = mandate;
@@ -36,15 +36,15 @@ public class Election {
 
     public void addPoliticalParties() {
         Map<String, PoliticalParty> pParties = new LinkedHashMap<>();
-        pParties.put("USR PLUS", new PoliticalParty("Alianța USR PLUS", "USR PLUS", politicalPosition.CENTER_RIGHT));
-        pParties.put("PNL", new PoliticalParty("Partidul Național Liberal", "PNL", politicalPosition.CENTER_RIGHT));
-        pParties.put("PSD", new PoliticalParty("Partidul Social Democrat", "PSD", politicalPosition.CENTER_LEFT));
-        pParties.put("UDMR", new PoliticalParty("Uniunea Democratică Maghiară din România", "UDMR", politicalPosition.CENTER_RIGHT));
-        pParties.put("PRO România", new PoliticalParty("PRO România", "PRO România", politicalPosition.CENTER));
-        pParties.put("PMP", new PoliticalParty("Partidul Mișcarea Populară", "PMP", politicalPosition.CENTER_RIGHT));
-        pParties.put("AUR", new PoliticalParty("Alianța pentru Unirea Românilor", "AUR", politicalPosition.RIGHT));
-        pParties.put("POL", new PoliticalParty("Partidul Oamenilor Liberi", "POL", politicalPosition.CENTER));
-        pParties.put("PRU", new PoliticalParty("Partidul România Unită", "PRU", politicalPosition.EXTREME_RIGHT));
+        pParties.put("USR PLUS", new PoliticalParty("Alianța USR PLUS", "USR PLUS", PoliticalPosition.CENTER_RIGHT));
+        pParties.put("PNL", new PoliticalParty("Partidul Național Liberal", "PNL", PoliticalPosition.CENTER_RIGHT));
+        pParties.put("PSD", new PoliticalParty("Partidul Social Democrat", "PSD", PoliticalPosition.CENTER_LEFT));
+        pParties.put("UDMR", new PoliticalParty("Uniunea Democratică Maghiară din România", "UDMR", PoliticalPosition.CENTER_RIGHT));
+        pParties.put("PRO România", new PoliticalParty("PRO România", "PRO România", PoliticalPosition.CENTER));
+        pParties.put("PMP", new PoliticalParty("Partidul Mișcarea Populară", "PMP", PoliticalPosition.CENTER_RIGHT));
+        pParties.put("AUR", new PoliticalParty("Alianța pentru Unirea Românilor", "AUR", PoliticalPosition.RIGHT));
+        pParties.put("POL", new PoliticalParty("Partidul Oamenilor Liberi", "POL", PoliticalPosition.CENTER));
+        pParties.put("PRU", new PoliticalParty("Partidul România Unită", "PRU", PoliticalPosition.EXTREME_RIGHT));
         this.politicalParties = pParties;
     }
 
@@ -72,11 +72,11 @@ public class Election {
         this.politicalParties = politicalParties;
     }
 
-    public typeOfElection getType() {
+    public ElectionType getType() {
         return type;
     }
 
-    public void setType(typeOfElection type) {
+    public void setType(ElectionType type) {
         this.type = type;
     }
 

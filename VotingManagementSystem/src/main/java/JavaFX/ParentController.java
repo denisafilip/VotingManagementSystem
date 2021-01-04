@@ -3,8 +3,8 @@ package JavaFX;
 import database.DatabaseOperations;
 import election.*;
 import election.enums.Question;
-import election.enums.numberOfRound;
-import election.enums.typeOfElection;
+import election.enums.RoundNumber;
+import election.enums.ElectionType;
 import election.referendum.Referendum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -21,14 +21,14 @@ import java.io.IOException;
 import java.time.Year;
 
 public class ParentController {
-    public static typeOfElection buttonPressed;
-    private Referendum firstReferendum = new Referendum(typeOfElection.REFERENDUM_QUESTION_1, Question.QUESTION1, Year.of(2019));
-    private Referendum secondReferendum = new Referendum(typeOfElection.REFERENDUM_QUESTION_2, Question.QUESTION2, Year.of(2019));
-    private Election presidentialElection = new PresidentialElection(Year.of(2019), 5, numberOfRound.ONE);
+    public static ElectionType buttonPressed;
+    private Referendum firstReferendum = new Referendum(ElectionType.REFERENDUM_QUESTION_1, Question.QUESTION1, Year.of(2019));
+    private Referendum secondReferendum = new Referendum(ElectionType.REFERENDUM_QUESTION_2, Question.QUESTION2, Year.of(2019));
+    private Election presidentialElection = new PresidentialElection(Year.of(2019), 5, RoundNumber.ONE);
     private Election localElection = new LocalElection(Year.of(2020), 5);
     private Election europeanParliamentElection = new EuropeanParliamentElection(Year.of(2019), 5);
-    private Election senateParliamentElection = new ParliamentElection(typeOfElection.SENATE_PARLIAMENT, Year.of(2020), 5);
-    private Election deputiesParliamentElection = new ParliamentElection(typeOfElection.CHAMBER_OF_DEPUTIES_PARLIAMENT, Year.of(2020), 5);
+    private Election senateParliamentElection = new ParliamentElection(ElectionType.SENATE_PARLIAMENT, Year.of(2020), 5);
+    private Election deputiesParliamentElection = new ParliamentElection(ElectionType.CHAMBER_OF_DEPUTIES_PARLIAMENT, Year.of(2020), 5);
     public static String CNP;
     public final DatabaseOperations database = new DatabaseOperations();
 
