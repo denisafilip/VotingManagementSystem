@@ -3,6 +3,8 @@ module VotingManagementSystem {
     requires javafx.fxml;
     requires org.jsoup;
     requires java.sql;
+    requires org.apache.commons.pool2;
+    requires commons.dbcp;
 
     opens JavaFX to javafx.fxml;
     opens JavaFX.elections to javafx.fxml;

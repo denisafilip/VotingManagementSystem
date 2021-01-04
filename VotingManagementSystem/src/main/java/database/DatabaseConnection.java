@@ -1,8 +1,9 @@
 package database;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import org.apache.commons.dbcp.*;
 
 /**
  * Class that creates ONLY one connection to the Microsoft SQL Server database (with Singleton Design Pattern)
@@ -10,24 +11,20 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
 
-    private static Connection conn = null;
+    private static final String DATABASE_URL = "jdbc:sqlserver://localhost:1433;databaseName=VotingManagementSystem;";
+    private static final  String DATABASE_USERNAME = "denisafilip";
+    private static final  String DATABASE_PASSWORD = "PasswordDB";
+    private static final BasicDataSource connectionPool = new BasicDataSource();
 
-    private static void createConnection() {
-        String DATABASE_URL = "jdbc:sqlserver://localhost:1433;databaseName=VotingManagementSystem;";
-        String DATABASE_USERNAME = "denisafilip";
-        String DATABASE_PASSWORD = "PasswordDB";
-        try {
-            conn = DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    static {
+        connectionPool.setUrl(DATABASE_URL);
+        connectionPool.setUsername(DATABASE_USERNAME);
+        connectionPool.setPassword(DATABASE_PASSWORD);
     }
 
-    public static Connection getConnection() {
-        if (conn == null) {
-            createConnection();
-        }
-        return conn;
-    }
+    private DatabaseConnection() {}
 
+    public static Connection getConnection() throws SQLException {
+        return connectionPool.getConnection();
+    }
 }
